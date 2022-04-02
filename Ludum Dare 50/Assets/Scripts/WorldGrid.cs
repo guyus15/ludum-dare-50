@@ -57,7 +57,6 @@ public class WorldGrid : MonoBehaviour
             GameObject newTile = Instantiate(_worldTilePrefab, convertedCoords, transform.rotation);
             
             newTile.GetComponent<WorldTile>().SetCoordinates(coords.x, coords.y);
-            
         }
     }
 }
