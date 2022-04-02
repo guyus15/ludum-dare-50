@@ -45,8 +45,8 @@ public class WorldTile
     private TileAreaType _tileAreaType;
     private TileResourceType _tileResourceType;
 
-    private Sprite _tileSprite;
-    
+    public Sprite TileSprite { get; private set; }
+
     public WorldTile(int xCoords, int yCoords)
     {
         _xCoords = xCoords;
@@ -66,25 +66,25 @@ public class WorldTile
         switch (_tileAreaType)
         {
             case TileAreaType.FARMLAND:
-                _tileSprite = farmlandTileSprite;
+                TileSprite = farmlandTileSprite;
                 break;
             case TileAreaType.FOREST:
-                _tileSprite = farmlandTileSprite;
+                TileSprite = farmlandTileSprite;
                 break;
             case TileAreaType.MOUNTAIN:
-                _tileSprite = farmlandTileSprite;
+                TileSprite = farmlandTileSprite;
                 break;
             case TileAreaType.FORTRESS:
-                _tileSprite = farmlandTileSprite;
+                TileSprite = farmlandTileSprite;
                 break;
             case TileAreaType.MINE:
-                _tileSprite = farmlandTileSprite;
+                TileSprite = farmlandTileSprite;
                 break;
             case TileAreaType.CITY:
-                _tileSprite = farmlandTileSprite;
+                TileSprite = farmlandTileSprite;
                 break;
             default:
-                _tileSprite = unknownTileSprite;
+                TileSprite = unknownTileSprite;
                 Debug.Log("A tile sprite does not exist for this tile type.");
                 break;
         }        
