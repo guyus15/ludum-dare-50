@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public enum TileAreaType
 {
     FARMLAND = 0,
@@ -17,7 +15,7 @@ public enum TileResourceType
     FOOD
 }
 
-public class WorldTile : MonoBehaviour
+public class WorldTile
 {
     private const int TILE_SIZE = 100;
     
