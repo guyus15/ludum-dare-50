@@ -18,7 +18,7 @@ public enum TileResourceType
     FOOD
 }
 
-public class WorldTile : MonoBehaviour
+public class WorldTile
 {
     // The X and Y dimensions for a tile.
     private const int TILE_SIZE = 100;
