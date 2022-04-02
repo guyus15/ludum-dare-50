@@ -18,19 +18,19 @@ public enum TileResourceType
     FOOD
 }
 
-public class WorldTile
+public class WorldTile : MonoBehaviour
 {
     // The X and Y dimensions for a tile.
     private const int TILE_SIZE = 100;
 
     // Defining the sprites for each tile.
-    [SerializeField] private Sprite farmlandTileSprite;
-    [SerializeField] private Sprite forestTileSprite;
-    [SerializeField] private Sprite mountainTileSprite;
-    [SerializeField] private Sprite fortressTileSprite;
-    [SerializeField] private Sprite cityTileSprite;
-    [SerializeField] private Sprite mineTileSprite;
-    [SerializeField] private Sprite unknownTileSprite;
+    [SerializeField] private Sprite _farmlandTileSprite;
+    [SerializeField] private Sprite _forestTileSprite;
+    [SerializeField] private Sprite _mountainTileSprite;
+    [SerializeField] private Sprite _fortressTileSprite;
+    [SerializeField] private Sprite _cityTileSprite;
+    [SerializeField] private Sprite _mineTileSprite;
+    [SerializeField] private Sprite _unknownTileSprite;
     
     private int _xCoords;
     private int _yCoords;
@@ -45,6 +45,7 @@ public class WorldTile
     private TileAreaType _tileAreaType;
     private TileResourceType _tileResourceType;
 
+    private SpriteRenderer _spriteRenderer;
     public Sprite TileSprite { get; private set; }
 
     public WorldTile(int xCoords, int yCoords)
@@ -58,6 +59,8 @@ public class WorldTile
         _tileAreaType = TileAreaType.FARMLAND;
         _tileResourceType = TileResourceType.FOOD;
 
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+
         AssignTileSprite();
     }
 
@@ -66,28 +69,30 @@ public class WorldTile
         switch (_tileAreaType)
         {
             case TileAreaType.FARMLAND:
-                TileSprite = farmlandTileSprite;
+                TileSprite = _farmlandTileSprite;
                 break;
             case TileAreaType.FOREST:
-                TileSprite = farmlandTileSprite;
+                TileSprite = _farmlandTileSprite;
                 break;
             case TileAreaType.MOUNTAIN:
-                TileSprite = farmlandTileSprite;
+                TileSprite = _farmlandTileSprite;
                 break;
             case TileAreaType.FORTRESS:
-                TileSprite = farmlandTileSprite;
+                TileSprite = _farmlandTileSprite;
                 break;
             case TileAreaType.MINE:
-                TileSprite = farmlandTileSprite;
+                TileSprite = _farmlandTileSprite;
                 break;
             case TileAreaType.CITY:
-                TileSprite = farmlandTileSprite;
+                TileSprite = _farmlandTileSprite;
                 break;
             default:
-                TileSprite = unknownTileSprite;
+                TileSprite = _unknownTileSprite;
                 Debug.Log("A tile sprite does not exist for this tile type.");
                 break;
-        }        
+        }
+
+        _spriteRenderer.sprite = TileSprite;
     }
 
     public bool IsUnderAttack()
