@@ -280,7 +280,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1424282564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,7 +293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a5c57bec0fbb9145adb006552f7c1a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gridSize: 10
+  _gridSize: 4
   _worldTilePrefab: {fileID: 6981367610864010666, guid: 6714b169957f2fb4b85fa7d736273098, type: 3}
   _tileContainer: {fileID: 204010162}
   _tileLayerMask:

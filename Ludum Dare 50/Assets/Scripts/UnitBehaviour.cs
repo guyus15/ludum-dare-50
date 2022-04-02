@@ -2,21 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum UnitType
+{
+    INFANTRY    = 0,
+    ARCHER      = 1,
+    CAVALRY     = 2,
+    E_INFANTRY = 3,
+    E_ARCHER = 4,
+    E_CAVALRY = 5,
+}
 public class UnitBehaviour : MonoBehaviour
 {
-    private float _unitHealth;
-    private int _unitStrength;
-    private int _unitLevel;
-    private int _unitMoveSpeed;
-    private int _unitUpkeep;
-    private int _unitCost;
-    private int[,] _unitPosition;
-    //UNIT TYPE
-    //PREFERRED TILE
+    [SerializeField] private float _unitHealth;
+    [SerializeField] private int _unitMaxHealth;
+    [SerializeField] private int _unitStrength;
+    [SerializeField] private int _unitLevel;
+    [SerializeField] private int _unitMoveSpeed;
+    [SerializeField] private int _unitUpkeep;
+    [SerializeField] private int _unitCost;
+    [SerializeField] private Vector2 _unitPosition;
+    [SerializeField] private UnitType _unitType;
+    [SerializeField] private TileAreaType _unitPrefTile;
+
+    
 
     //Movement
     //Attacking 
-    //Spawn
     //Disband
     //Level up
     //reinforce
@@ -33,6 +44,26 @@ public class UnitBehaviour : MonoBehaviour
         //Get current position
         //Get Land status (health)
         //Remove 1 from the land status
+    }
+
+    void DisbandUnit()
+    {
+        //Get selected unit
+        //remove unit from game
+    }
+
+    void UnitLevelUp()
+    {
+        //Get unit current level
+        //+1
+        //check rewards for that level
+
+    }
+
+    void UnitReinforce()
+    {
+        //Disable movement for unit for 2 turns
+        //Increase strength/health for 2 turns
     }
 
 
