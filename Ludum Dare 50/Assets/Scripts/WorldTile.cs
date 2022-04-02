@@ -32,8 +32,8 @@ public class WorldTile : MonoBehaviour
     [SerializeField] private Sprite _mineTileSprite;
     [SerializeField] private Sprite _unknownTileSprite;
     
-    private int _xCoords;
-    private int _yCoords;
+    private float _xCoords;
+    private float _yCoords;
 
     private bool _underAttack;
     private bool _enemyOwned;
@@ -48,11 +48,8 @@ public class WorldTile : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     public Sprite TileSprite { get; private set; }
 
-    public WorldTile(int xCoords, int yCoords)
+    private void Start()
     {
-        _xCoords = xCoords;
-        _yCoords = yCoords;
-
         _underAttack = false;
         _enemyOwned = false;
 
@@ -64,6 +61,12 @@ public class WorldTile : MonoBehaviour
         AssignTileSprite();
     }
 
+    public void SetCoordinates(float xCoords, float yCoords)
+    {
+        _xCoords = xCoords;
+        _yCoords = yCoords;
+    }
+    
     private void AssignTileSprite()
     {
         switch (_tileAreaType)
