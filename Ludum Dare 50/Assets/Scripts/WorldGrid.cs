@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,6 +13,8 @@ public class WorldGrid : MonoBehaviour
 
     private List<Vector2> _tileCoords;
 
+    RaycastHit2D _lastTileHit;
+    
     #region Singleton
     private void Awake()
     {
@@ -47,10 +50,41 @@ public class WorldGrid : MonoBehaviour
         BuildWorld();
     }
 
+    private void Update()
+    {
+        // Create a ray to determine what tile we have hit.
+        
+        RaycastHit2D hit = Physics2D.Raycast(
+            Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero
+        );
+
+        if (hit.collider != null)
+        {
+            WorldTile hitTile = hit.collider.gameObject.GetComponent<WorldTile>();
+            hitTile.HighlightTile(true);        
+        
+            if (!hit.collider.Equals(_lastTileHit.collider) && _lastTileHit.collider != null)
+            {
+                WorldTile lastHitTile = _lastTileHit.collider.gameObject.GetComponent<WorldTile>();
+
+                lastHitTile.HighlightTile(false);
+                hitTile.HighlightTile(true);
+            }
+            
+            _lastTileHit = hit;
+        }
+        else
+        {
+            if (_lastTileHit.collider != null)
+            {
+                WorldTile hitTile = _lastTileHit.collider.gameObject.GetComponent<WorldTile>();
+                hitTile.HighlightTile(false);
+            }
+        }
+    }
+
     private void BuildWorld()
     {
-        Debug.Log("Building the world");
-        
         foreach (Vector2 coords in _tileCoords)
         {
             Vector3 convertedCoords = new Vector3(coords.x, coords.y, 0f);
