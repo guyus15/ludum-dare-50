@@ -56,7 +56,8 @@ public class WorldGrid : MonoBehaviour
             Vector3 convertedCoords = new Vector3(coords.x, coords.y, 0f);
             GameObject newTile = Instantiate(_worldTilePrefab, convertedCoords, transform.rotation);
             
-            // Set random tile attributes here.
+            newTile.GetComponent<WorldTile>().SetCoordinates(coords.x, coords.y);
+            
         }
     }
 }
