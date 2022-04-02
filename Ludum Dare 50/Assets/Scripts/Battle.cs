@@ -25,9 +25,11 @@ public class Battle : MonoBehaviour
         {
             return 1;
         }
+
+        return 0;
     }
 
-    float takeTurn(int attackerDamage, float defenderHP) //The 'attacker' is the one doing the damage here not the same as the one attacking the tile
+    float takeTurn(float attackerDamage, float defenderHP) //The 'attacker' is the one doing the damage here not the same as the one attacking the tile
     {
         return defenderHP - attackerDamage;
     }
