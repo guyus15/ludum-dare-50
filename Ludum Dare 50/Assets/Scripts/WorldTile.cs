@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public enum TileAreaType
@@ -37,7 +38,8 @@ public class WorldTile : MonoBehaviour
 
     private bool _underAttack;
     private bool _enemyOwned;
-
+    private bool _highlighted;
+    
     private int _numTurnsUnderAttack;
     private int _income;
     private int _population;
@@ -52,6 +54,7 @@ public class WorldTile : MonoBehaviour
     {
         _underAttack = false;
         _enemyOwned = false;
+        _highlighted = false;
 
         // Picking a random area and resource type for the tile.
         
@@ -100,6 +103,12 @@ public class WorldTile : MonoBehaviour
         }
         
         _spriteRenderer.sprite = TileSprite;
+    }
+
+    public void HighlightTile(bool highlight)
+    {
+        _spriteRenderer.color = highlight ? new Color(1f, 1f, 1f, 0.5f)
+            : new Color(1f, 1f, 1f, 1f);
     }
 
     public bool IsUnderAttack()
