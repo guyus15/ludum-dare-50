@@ -25,6 +25,8 @@ public class WorldGridMovement : MonoBehaviour
     private void Update()
     {
         // Camera dragging movement
+
+        float proportionateDragSpeed = (_mouseDragSpeed / _minCameraZoom) * _mainCamera.orthographicSize;
         
         if (Input.GetMouseButtonDown(2))
         {
@@ -37,7 +39,7 @@ public class WorldGridMovement : MonoBehaviour
 
             Vector3 deltaPos = _dragOrigin - _lastDragOrigin;
 
-            transform.position += (deltaPos * _mouseDragSpeed * Time.deltaTime);
+            transform.position += (deltaPos * proportionateDragSpeed * Time.deltaTime);
 
             _lastDragOrigin = _dragOrigin;
         }
