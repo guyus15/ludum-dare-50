@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7907543503678445624}
   - component: {fileID: 3294950181765597485}
   - component: {fileID: 4277506419152285285}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: WorldTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
