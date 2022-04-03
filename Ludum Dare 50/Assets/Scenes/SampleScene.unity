@@ -510,6 +510,51 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &709806680
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 709806682}
+  - component: {fileID: 709806681}
+  m_Layer: 0
+  m_Name: MenuManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &709806681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709806680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43839b494a7d7bf44ad543100889691c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileMenuObject: {fileID: 1424282563}
+  _generalMenuObject: {fileID: 0}
+--- !u!4 &709806682
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709806680}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &786310748
 RectTransform:
   m_ObjectHideFlags: 0
@@ -821,6 +866,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 786310748}
+  - component: {fileID: 1424282564}
   - component: {fileID: 786310750}
   - component: {fileID: 786310749}
   m_Layer: 5
@@ -829,7 +875,25 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
+--- !u!114 &1424282564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424282563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: add17d2d902966242a3b0a1ff293ff29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _areaNameText: {fileID: 1413524355}
+  _populationText: {fileID: 1828943453}
+  _incomeText: {fileID: 2109730440}
+  _underAttackText: {fileID: 1137365044}
+  _enemyOwnedText: {fileID: 1525057111}
+  _turnsUnderAttackText: {fileID: 1038035497}
 --- !u!1 &1525057109
 GameObject:
   m_ObjectHideFlags: 0
