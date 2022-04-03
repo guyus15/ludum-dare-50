@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public enum TileAreaType
@@ -21,7 +22,7 @@ public enum TileResourceType
 public class WorldTile : MonoBehaviour
 {
     // The X and Y dimensions for a tile.
-    private const int TILE_SIZE = 100;
+    private static int TILE_SIZE = 100;
 
     // Defining the sprites for each tile.
     [SerializeField] private Sprite _farmlandTileSprite;
@@ -32,12 +33,13 @@ public class WorldTile : MonoBehaviour
     [SerializeField] private Sprite _mineTileSprite;
     [SerializeField] private Sprite _unknownTileSprite;
     
-    private int _xCoords;
-    private int _yCoords;
+    private float _xCoords;
+    private float _yCoords;
 
     private bool _underAttack;
     private bool _enemyOwned;
-
+    private bool _highlighted;
+    
     private int _numTurnsUnderAttack;
     private int _income;
     private int _population;
@@ -48,15 +50,17 @@ public class WorldTile : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     public Sprite TileSprite { get; private set; }
 
-    public WorldTile(int xCoords, int yCoords)
+    private void Start()
     {
-        _xCoords = xCoords;
-        _yCoords = yCoords;
-
         _underAttack = false;
         _enemyOwned = false;
+        _highlighted = false;
 
-        _tileAreaType = TileAreaType.FARMLAND;
+        // Picking a random area and resource type for the tile.
+        
+        Array tileAreaTypes = Enum.GetValues(typeof(TileAreaType));
+        _tileAreaType = (TileAreaType)tileAreaTypes.GetValue(UnityEngine.Random.Range(0, tileAreaTypes.Length));
+        
         _tileResourceType = TileResourceType.FOOD;
 
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -64,6 +68,12 @@ public class WorldTile : MonoBehaviour
         AssignTileSprite();
     }
 
+    public void SetCoordinates(float xCoords, float yCoords)
+    {
+        _xCoords = xCoords;
+        _yCoords = yCoords;
+    }
+    
     private void AssignTileSprite()
     {
         switch (_tileAreaType)
@@ -72,27 +82,38 @@ public class WorldTile : MonoBehaviour
                 TileSprite = _farmlandTileSprite;
                 break;
             case TileAreaType.FOREST:
-                TileSprite = _farmlandTileSprite;
+                TileSprite = _forestTileSprite;
                 break;
             case TileAreaType.MOUNTAIN:
-                TileSprite = _farmlandTileSprite;
+                TileSprite = _mountainTileSprite;
                 break;
             case TileAreaType.FORTRESS:
-                TileSprite = _farmlandTileSprite;
+                TileSprite = _fortressTileSprite;
                 break;
             case TileAreaType.MINE:
-                TileSprite = _farmlandTileSprite;
+                TileSprite = _mineTileSprite;
                 break;
             case TileAreaType.CITY:
-                TileSprite = _farmlandTileSprite;
+                TileSprite = _cityTileSprite;
                 break;
             default:
                 TileSprite = _unknownTileSprite;
                 Debug.Log("A tile sprite does not exist for this tile type.");
                 break;
         }
-
+        
         _spriteRenderer.sprite = TileSprite;
+    }
+
+    public void HighlightTile(bool highlight)
+    {
+        _spriteRenderer.color = highlight ? new Color(1f, 1f, 1f, 0.5f)
+            : new Color(1f, 1f, 1f, 1f);
+    }
+
+    public static int GetTileSize()
+    {
+        return TILE_SIZE;
     }
 
     public bool IsUnderAttack()
