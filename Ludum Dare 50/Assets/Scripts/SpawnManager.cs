@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+
+    public static SpawnManager instance;
+
     [SerializeField] private GameObject _infantryPrefab;
     [SerializeField] private GameObject _archerPrefab;
     [SerializeField] private GameObject _cavalryPrefab;
@@ -11,8 +14,22 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject _enemyArcherPrefab;
     [SerializeField] private GameObject _enemyCavalryPrefab;
 
+    #region Singleton
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Debug.Log("Instance already exists, destroying object!");
+            Destroy(this);
+        }
+    }
+    #endregion
 
-    void SpawnAllyUnit(Vector2 mousePos, UnitType unitType) //Create game object of unit type
+    public void SpawnAllyUnit(Vector2 spawnPos, UnitType unitType, WorldTile currentTile) //Create game object of unit type
     {
         GameObject unitPrefab;
 
@@ -33,7 +50,8 @@ public class SpawnManager : MonoBehaviour
                 break;
         }
 
-        Instantiate(unitPrefab, new Vector3(mousePos.x, mousePos.y, 0f), transform.rotation);
+        Instantiate(unitPrefab, new Vector3(spawnPos.x, spawnPos.y, 0f), transform.rotation, currentTile.transform);
+        Debug.Log("Spawned " + unitType + "at " + spawnPos.x + spawnPos.y);
     }
 
     void SpawnEnemyUnit(UnitType unitType)
