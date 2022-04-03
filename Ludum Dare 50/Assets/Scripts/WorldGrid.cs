@@ -60,12 +60,28 @@ public class WorldGrid : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.K))
+        if(Input.GetKeyDown(KeyCode.B))
         {
             buildState = true;
-            Debug.Log("Build state now true");
-            desiredUnit = UnitType.INFANTRY;
-            Debug.Log("Chosen unit: " + desiredUnit);
+            Debug.Log("Buildstate now true");
+        }
+        if (buildState)
+        {
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                desiredUnit = UnitType.INFANTRY;
+                Debug.Log("Chosen unit: " + desiredUnit);
+            }
+            if (Input.GetKeyDown(KeyCode.Y))
+            {
+                desiredUnit = UnitType.ARCHER;
+                Debug.Log("Chosen unit: " + desiredUnit);
+            }
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                desiredUnit = UnitType.CAVALRY;
+                Debug.Log("Chosen unit: " + desiredUnit);
+            }
         }
 
         // Create a ray to determine what tile we have hit.
@@ -92,11 +108,22 @@ public class WorldGrid : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 MenuManager.instance.ShowTileMenu(hitTile);
+
+                //GameObject selectedUnit = hitTile.TileOccupier;
+                //Debug.Log($"Selected {selectedUnit} at {hitTile.XCoords}, {hitTile.YCoords}");
+
                 if (buildState)
                 {
                     SpawnManager.instance.SpawnAllyUnit(new Vector2(hitTile.XCoords, hitTile.YCoords), desiredUnit, hitTile);
                     buildState = false;
                 }
+                /*if (selectedUnit != null)
+                {
+                    selectedUnit.GetComponent<UnitBehaviour>().MoveToTile(selectedUnit, hitTile);
+                    Debug.Log($"Moved {selectedUnit} to {hitTile.XCoords}, {hitTile.YCoords}");
+                }
+                */
+                
             }
             
             _lastTileHit = hit;
