@@ -45,11 +45,11 @@ public class WorldGrid : MonoBehaviour
         
         for (int i = 0; i < _gridSize * _gridSize; i++)
         {
-            if (i % _gridSize == 0)
+            if (i % _gridSize == 0 && i != 0)
             {
                 currentRow++;
             }
-
+            
             _tileCoords.Add(new Vector2(i % _gridSize, currentRow));
         }
 
@@ -60,11 +60,10 @@ public class WorldGrid : MonoBehaviour
 
     private void Update()
     {
-
         if(Input.GetKeyDown(KeyCode.K))
         {
             buildState = true;
-            Debug.Log("Buildstate now true");
+            Debug.Log("Build state now true");
             desiredUnit = UnitType.INFANTRY;
             Debug.Log("Chosen unit: " + desiredUnit);
         }
@@ -111,6 +110,8 @@ public class WorldGrid : MonoBehaviour
 
     private void BuildWorld()
     {
+        // Handle building special tiles on which enemies can spawn.
+        
         foreach (Vector2 coords in _tileCoords)
         {
             Vector3 convertedCoords = new Vector3(coords.x - (_gridSize / 2) + 0.5f, coords.y - (_gridSize / 2), 0f);
@@ -121,8 +122,16 @@ public class WorldGrid : MonoBehaviour
                 transform.rotation,
                 _tileContainer.transform
             );
+            
+            WorldTile newWorldTile = newTile.GetComponent<WorldTile>();
 
-            newTile.GetComponent<WorldTile>().SetCoordinates(convertedCoords.x, convertedCoords.y);
+            newWorldTile.SetCoordinates(convertedCoords.x, convertedCoords.y);
+            
+            // Determine if the tile is a spawn tile.
+            if (coords.x == 0 || coords.y == 0 || coords.x == _gridSize - 1 || coords.y == _gridSize - 1)
+            {
+                newWorldTile.MarkAsSpawnTile();
+            }
         }
     }
 
