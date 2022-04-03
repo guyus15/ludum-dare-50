@@ -22,5 +22,6 @@ public class UIManager : MonoBehaviour
     public void SetRes()
     {
         Screen.SetResolution(width, height, false);
+        Debug.Log("Setting Res");
     }
 }
