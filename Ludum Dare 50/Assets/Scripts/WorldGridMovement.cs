@@ -3,19 +3,30 @@ using UnityEngine;
 public class WorldGridMovement : MonoBehaviour
 {
     private Camera _mainCamera;
-    private float _cameraZDistance;
+
+    private Vector3 _dragOrigin;
+    
+    [SerializeField] private float _mouseDragSpeed;
     
     private void Start()
     {
         _mainCamera = Camera.main;
-        _cameraZDistance = _mainCamera.WorldToScreenPoint(transform.position).z;
     }
 
-    private void OnMouseDrag()
+    private void Update()
     {
-        Vector3 screenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, _cameraZDistance);
-        Vector3 newWorldPosition = _mainCamera.ScreenToWorldPoint(screenPosition);
+        if (Input.GetMouseButtonDown(2))
+        {
+            _dragOrigin = Input.mousePosition;
+            return;
+        }
 
-        transform.position = newWorldPosition;
+        if (Input.GetMouseButton(2))
+        {
+            Vector3 pos = _mainCamera.ScreenToViewportPoint(Input.mousePosition - _dragOrigin);
+            Vector3 move = new Vector3(pos.x * _mouseDragSpeed, pos.y * _mouseDragSpeed, 0);
+            
+            transform.Translate(move, Space.World);
+        }
     }
 }
