@@ -5,15 +5,14 @@ public class WorldGrid : MonoBehaviour
 {
     public static WorldGrid instance;
 
-    private Vector2 _startingCoords;
-    
     [SerializeField] private int _gridSize = 10;
     [SerializeField] private GameObject _worldTilePrefab;
     [SerializeField] private GameObject _tileContainer;
     [SerializeField] private LayerMask _tileLayerMask;
     
     private List<Vector2> _tileCoords;
-
+    private List<GameObject> _spawnTileObjects;
+    
     private Camera _mainCamera;
     
     private RaycastHit2D _lastTileHit;
@@ -38,7 +37,6 @@ public class WorldGrid : MonoBehaviour
     private void Start()
     {
         // Create the world tiles for the game.
-        _startingCoords = Vector2.zero;
         _tileCoords = new List<Vector2>();
 
         int currentRow = 0;
@@ -158,6 +156,7 @@ public class WorldGrid : MonoBehaviour
             if (coords.x == 0 || coords.y == 0 || coords.x == _gridSize - 1 || coords.y == _gridSize - 1)
             {
                 newWorldTile.MarkAsSpawnTile();
+                _spawnTileObjects.Add(newTile);
             }
         }
     }
