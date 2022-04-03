@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 public enum TileAreaType
@@ -34,36 +33,34 @@ public class WorldTile : MonoBehaviour
     [SerializeField] private Sprite _mineTileSprite;
     [SerializeField] private Sprite _plainsTileSprite;
     [SerializeField] private Sprite _unknownTileSprite;
-    
-    private float _xCoords;
-    private float _yCoords;
 
-    private bool _underAttack;
-    private bool _enemyOwned;
-    private bool _highlighted;
-    
-    private int _numTurnsUnderAttack;
-    private int _income;
-    private int _population;
-    
-    private TileAreaType _tileAreaType;
-    private TileResourceType _tileResourceType;
+    public float XCoords { get; private set; }
+    public float YCoords { get; private set; }
+
+    public bool UnderAttack { get; set; }
+    public bool EnemyOwned { get; set; }
+
+    public int TurnsUnderAttack { get; private set; }
+    public int Income { get; private set; }
+    public int Population { get; private set; }
+
+    public TileAreaType TileArea { get; private set; }
+    public TileResourceType TileResource { get; private set; }
 
     private SpriteRenderer _spriteRenderer;
     public Sprite TileSprite { get; private set; }
 
     private void Start()
     {
-        _underAttack = false;
-        _enemyOwned = false;
-        _highlighted = false;
+        UnderAttack = false;
+        EnemyOwned = false;
 
         // Picking a random area and resource type for the tile.
         
         Array tileAreaTypes = Enum.GetValues(typeof(TileAreaType));
-        _tileAreaType = (TileAreaType)tileAreaTypes.GetValue(UnityEngine.Random.Range(0, tileAreaTypes.Length));
+        TileArea = (TileAreaType)tileAreaTypes.GetValue(UnityEngine.Random.Range(0, tileAreaTypes.Length));
         
-        _tileResourceType = TileResourceType.FOOD;
+        TileResource = TileResourceType.FOOD;
 
         _spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -72,13 +69,13 @@ public class WorldTile : MonoBehaviour
 
     public void SetCoordinates(float xCoords, float yCoords)
     {
-        _xCoords = xCoords;
-        _yCoords = yCoords;
+        XCoords = xCoords;
+        YCoords = yCoords;
     }
     
     private void AssignTileSprite()
     {
-        switch (_tileAreaType)
+        switch (TileArea)
         {
             case TileAreaType.FARMLAND:
                 TileSprite = _farmlandTileSprite;
@@ -119,15 +116,5 @@ public class WorldTile : MonoBehaviour
     public static int GetTileSize()
     {
         return TILE_SIZE;
-    }
-
-    public bool IsUnderAttack()
-    {
-        return _underAttack;
-    }
-
-    public bool IsEnemyOwned()
-    {
-        return _enemyOwned;
     }
 }
