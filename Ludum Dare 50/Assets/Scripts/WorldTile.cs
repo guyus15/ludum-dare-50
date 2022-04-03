@@ -9,7 +9,8 @@ public enum TileAreaType
     MOUNTAIN,
     FORTRESS,
     CITY,
-    MINE
+    MINE,
+    PLAINS
 }
 
 public enum TileResourceType
@@ -31,6 +32,7 @@ public class WorldTile : MonoBehaviour
     [SerializeField] private Sprite _fortressTileSprite;
     [SerializeField] private Sprite _cityTileSprite;
     [SerializeField] private Sprite _mineTileSprite;
+    [SerializeField] private Sprite _plainsTileSprite;
     [SerializeField] private Sprite _unknownTileSprite;
     
     private float _xCoords;
@@ -95,6 +97,9 @@ public class WorldTile : MonoBehaviour
                 break;
             case TileAreaType.CITY:
                 TileSprite = _cityTileSprite;
+                break;
+            case TileAreaType.PLAINS:
+                TileSprite = _plainsTileSprite;
                 break;
             default:
                 TileSprite = _unknownTileSprite;

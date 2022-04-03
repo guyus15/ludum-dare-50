@@ -102,6 +102,7 @@ MonoBehaviour:
   _fortressTileSprite: {fileID: 21300000, guid: 8be650e0728640344b53a52634d0814c, type: 3}
   _cityTileSprite: {fileID: 21300000, guid: f0e2f640a4d396543bfdadf3315846d7, type: 3}
   _mineTileSprite: {fileID: 21300000, guid: 735fd0cae2d29f24bbf18ae8f57bba75, type: 3}
+  _plainsTileSprite: {fileID: 21300000, guid: f124bd23a87d7a144bf955b8b35f2f42, type: 3}
   _unknownTileSprite: {fileID: 21300000, guid: 2418c47ffe7a00e4f9be6a48e96707b0, type: 3}
 --- !u!61 &4277506419152285285
 BoxCollider2D:
