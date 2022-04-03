@@ -81,7 +81,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &3294950181765597485
@@ -96,8 +96,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19ad966b5627da344ae642fe67cd2b36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _farmlandTileSprite: {fileID: 21300000, guid: 65c831a37e3355c43997b5df23fce617, type: 3}
-  _forestTileSprite: {fileID: 21300000, guid: 1b74f29aca081794798521111507c616, type: 3}
+  _farmlandTileSprite: {fileID: 21300000, guid: d29b0daa389792b40a93e18b847573bd, type: 3}
+  _forestTileSprite: {fileID: 21300000, guid: 88b316fd69cbcd44aa03968147bc4fc0, type: 3}
   _mountainTileSprite: {fileID: 21300000, guid: 94d2665564e47694b94290e5841f21dc, type: 3}
   _fortressTileSprite: {fileID: 21300000, guid: 8be650e0728640344b53a52634d0814c, type: 3}
   _cityTileSprite: {fileID: 21300000, guid: f0e2f640a4d396543bfdadf3315846d7, type: 3}

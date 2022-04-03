@@ -22,7 +22,7 @@ public enum TileResourceType
 public class WorldTile : MonoBehaviour
 {
     // The X and Y dimensions for a tile.
-    private static int TILE_SIZE = 100;
+    private static int TILE_SIZE = 200;
 
     // Defining the sprites for each tile.
     [SerializeField] private Sprite _farmlandTileSprite;

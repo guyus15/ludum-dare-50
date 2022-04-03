@@ -97,8 +97,7 @@ public class WorldGrid : MonoBehaviour
         foreach (Vector2 coords in _tileCoords)
         {
             Vector3 convertedCoords = new Vector3(coords.x - (_gridSize / 2), coords.y - (_gridSize / 2), 0f);
-            
-            
+
             GameObject newTile = Instantiate(
                 _worldTilePrefab,
                 convertedCoords,
