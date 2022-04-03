@@ -177,7 +177,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 345062608}
-  - component: {fileID: 345062607}
   m_Layer: 0
   m_Name: TileContainer
   m_TagString: Untagged
@@ -185,22 +184,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &345062607
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 345062606}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c009313434af16345b9fb69cc7550209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mouseDragSpeed: 5
-  _minCameraZoom: 5
-  _maxCameraZoom: 0.5
-  _cameraZoomStep: 0.5
 --- !u!4 &345062608
 Transform:
   m_ObjectHideFlags: 0
@@ -472,6 +455,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 519420032}
+  - component: {fileID: 519420030}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   m_Layer: 0
@@ -489,6 +473,22 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
+--- !u!114 &519420030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cb8d15e27f708b4594b0ad06292504b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mouseDragSpeed: 5
+  _minCameraZoom: 5
+  _maxCameraZoom: 0.5
+  _cameraZoomStep: 0.5
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0

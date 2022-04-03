@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class WorldGrid : MonoBehaviour
 {
-    public static WorldGrid _instance;
+    public static WorldGrid instance;
 
     private Vector2 _startingCoords;
     
-    [SerializeField] private int _gridSize;
+    [SerializeField] private int _gridSize = 10;
     [SerializeField] private GameObject _worldTilePrefab;
     [SerializeField] private GameObject _tileContainer;
     [SerializeField] private LayerMask _tileLayerMask;
@@ -17,15 +17,15 @@ public class WorldGrid : MonoBehaviour
 
     private Camera _mainCamera;
 
-    RaycastHit2D _lastTileHit;
+    private RaycastHit2D _lastTileHit;
     
     #region Singleton
     private void Awake()
     {
-        if (_instance == null)
+        if (instance == null)
         {
-            _instance = this;
-        } else if (_instance != this)
+            instance = this;
+        } else if (instance != this)
         {
             Debug.Log("Instance already exists, destroying object!");
             Destroy(this);
@@ -86,13 +86,10 @@ public class WorldGrid : MonoBehaviour
             
             _lastTileHit = hit;
         }
-        else
+        else if (_lastTileHit.collider != null)
         {
-            if (_lastTileHit.collider != null)
-            {
-                WorldTile hitTile = _lastTileHit.collider.gameObject.GetComponent<WorldTile>();
-                hitTile.HighlightTile(false);
-            }
+            WorldTile hitTile = _lastTileHit.collider.gameObject.GetComponent<WorldTile>();
+            hitTile.HighlightTile(false);
         }
     }
 
@@ -111,5 +108,10 @@ public class WorldGrid : MonoBehaviour
 
             newTile.GetComponent<WorldTile>().SetCoordinates(coords.x, coords.y);
         }
+    }
+
+    public int GetGridSize()
+    {
+        return _gridSize;
     }
 }
