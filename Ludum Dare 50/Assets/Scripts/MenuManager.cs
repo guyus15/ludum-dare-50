@@ -29,6 +29,9 @@ public class MenuManager : MonoBehaviour
 
     private void Start()
     {
+        _tileMenuObject.SetActive(false);
+        _generalMenuObject.SetActive(true);
+        
         _tileMenu = _tileMenuObject.GetComponent<TileMenu>();
 
         _currentlySelectedTile = null;
