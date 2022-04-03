@@ -32,11 +32,11 @@ public class UnitBehaviour : MonoBehaviour
     //Level up
     //reinforce
 
-    void MoveToTile()
+    public void MoveToTile(GameObject selectedUnit, WorldTile destinationTile)
     {
-        //While unit is selected
-        //Get tile related to mouse position
-        //set Units coords to that tile
+        GameObject unit = selectedUnit;
+        //Set selected units coord to the destination tiles coords
+        unit.transform.localPosition = new Vector3(destinationTile.XCoords, destinationTile.YCoords, 0f);
     }
 
     void AttackLand()

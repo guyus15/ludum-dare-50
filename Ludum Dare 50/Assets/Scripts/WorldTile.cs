@@ -50,6 +50,9 @@ public class WorldTile : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     public Sprite TileSprite { get; private set; }
 
+    public GameObject TileOccupier { get; set; }
+
+
     private void Start()
     {
         UnderAttack = false;

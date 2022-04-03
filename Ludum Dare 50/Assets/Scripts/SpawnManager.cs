@@ -50,11 +50,11 @@ public class SpawnManager : MonoBehaviour
                 break;
         }
 
-        Instantiate(unitPrefab, new Vector3(spawnPos.x, spawnPos.y, 0f), transform.rotation, currentTile.transform);
+        currentTile.TileOccupier = Instantiate(unitPrefab, new Vector3(spawnPos.x, spawnPos.y, 0f), transform.rotation, currentTile.transform);
         Debug.Log("Spawned " + unitType + "at " + spawnPos.x + spawnPos.y);
     }
 
-    void SpawnEnemyUnit(UnitType unitType)
+    void SpawnEnemyUnit(Vector2 spawnpos, UnitType unitType, WorldTile currentTile)
     {
         GameObject unitPrefab;
 

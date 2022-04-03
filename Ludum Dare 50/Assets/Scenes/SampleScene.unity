@@ -662,7 +662,7 @@ MonoBehaviour:
   _tileLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  buildState: 1
+  buildState: 0
   desiredUnit: 0
 --- !u!4 &700475738
 Transform:
@@ -1057,11 +1057,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _infantryPrefab: {fileID: 8058163470740518375, guid: f92f10e55e47b0e47a1c05b0040304fb, type: 3}
-  _archerPrefab: {fileID: 0}
-  _cavalryPrefab: {fileID: 0}
-  _enemyInfantryPrefab: {fileID: 0}
-  _enemyArcherPrefab: {fileID: 0}
-  _enemyCavalryPrefab: {fileID: 0}
+  _archerPrefab: {fileID: 5973354789240453183, guid: 300e37eaee68a154882e580a4237d736, type: 3}
+  _cavalryPrefab: {fileID: 4462267553543529057, guid: ee6203fe42d814645adff3f6679b69eb, type: 3}
+  _enemyInfantryPrefab: {fileID: 7942359509036007157, guid: 624ab4315aed92e4d9403174707e207f, type: 3}
+  _enemyArcherPrefab: {fileID: 4023827700309685750, guid: 082ee9e87ba7e2c47a4be99d0d9a5e24, type: 3}
+  _enemyCavalryPrefab: {fileID: 8319354050665463911, guid: d29aefee31cfe514c9ba1ecdc1982a27, type: 3}
 --- !u!4 &1148591800
 Transform:
   m_ObjectHideFlags: 0
