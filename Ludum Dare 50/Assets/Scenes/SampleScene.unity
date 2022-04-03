@@ -555,7 +555,7 @@ GameObject:
   - component: {fileID: 696483727}
   - component: {fileID: 696483726}
   m_Layer: 5
-  m_Name: EnemyOwnedText
+  m_Name: ControlledAreasText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1308,7 +1308,7 @@ GameObject:
   - component: {fileID: 1670619069}
   - component: {fileID: 1670619068}
   m_Layer: 5
-  m_Name: TurnsUnderAttackText
+  m_Name: EnemyOwnedAreas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1547,6 +1547,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1994096995}
+  - component: {fileID: 1994096998}
   - component: {fileID: 1994096997}
   - component: {fileID: 1994096996}
   m_Layer: 5
@@ -1619,6 +1620,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1994096994}
   m_CullTransparentMesh: 1
+--- !u!114 &1994096998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994096994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e66ac86153740294dbf4b6588f03c4ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _totalPopulation: {fileID: 1279453372}
+  _totalIncomeText: {fileID: 977112495}
+  _areasUnderAttackText: {fileID: 1751956895}
+  _controlledAreasText: {fileID: 696483726}
+  _enemyOwnedAreas: {fileID: 1670619068}
 --- !u!1 &2109730438
 GameObject:
   m_ObjectHideFlags: 0
