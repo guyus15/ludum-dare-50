@@ -113,7 +113,7 @@ public class WorldGrid : MonoBehaviour
     {
         foreach (Vector2 coords in _tileCoords)
         {
-            Vector3 convertedCoords = new Vector3(coords.x - (_gridSize / 2), coords.y - (_gridSize / 2), 0f);
+            Vector3 convertedCoords = new Vector3(coords.x - (_gridSize / 2) + 0.5f, coords.y - (_gridSize / 2), 0f);
 
             GameObject newTile = Instantiate(
                 _worldTilePrefab,
@@ -122,7 +122,7 @@ public class WorldGrid : MonoBehaviour
                 _tileContainer.transform
             );
 
-            newTile.GetComponent<WorldTile>().SetCoordinates(coords.x, coords.y);
+            newTile.GetComponent<WorldTile>().SetCoordinates(convertedCoords.x, convertedCoords.y);
         }
     }
 
