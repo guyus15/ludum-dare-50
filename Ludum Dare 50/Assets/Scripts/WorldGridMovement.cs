@@ -5,6 +5,7 @@ public class WorldGridMovement : MonoBehaviour
     private Camera _mainCamera;
 
     private Vector3 _dragOrigin;
+    private Vector3 _lastDragOrigin;
     
     [SerializeField] private float _mouseDragSpeed;
     
@@ -19,17 +20,18 @@ public class WorldGridMovement : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(2))
         {
-            _dragOrigin = Input.mousePosition;
+            _lastDragOrigin = Input.mousePosition;
         }
-
+        
         if (Input.GetMouseButton(2))
         {
-            Vector3 pos = _mainCamera.ScreenToViewportPoint(_dragOrigin - Input.mousePosition);
-            Vector3 move = new Vector3(pos.x * _mouseDragSpeed, pos.y * _mouseDragSpeed, 0);
+            _dragOrigin = Input.mousePosition;
 
-            Vector3 deltaPos = transform.position - move;
-            
-            transform.position = deltaPos;
+            Vector3 deltaPos = _dragOrigin - _lastDragOrigin;
+
+            transform.position += (deltaPos * _mouseDragSpeed * Time.deltaTime);
+
+            _lastDragOrigin = _dragOrigin;
         }
     }
 }
