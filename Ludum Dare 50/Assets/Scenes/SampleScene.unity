@@ -198,6 +198,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mouseDragSpeed: 5
+  _minCameraZoom: 5
+  _maxCameraZoom: 0.5
+  _cameraZoomStep: 0.5
 --- !u!4 &345062608
 Transform:
   m_ObjectHideFlags: 0
