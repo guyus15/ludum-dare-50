@@ -77,7 +77,11 @@ public class WorldGrid : MonoBehaviour
                 WorldTile lastHitTile = _lastTileHit.collider.gameObject.GetComponent<WorldTile>();
 
                 lastHitTile.HighlightTile(false);
-                hitTile.HighlightTile(true);
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                MenuManager.instance.ShowTileMenu(hitTile);    
             }
             
             _lastTileHit = hit;
