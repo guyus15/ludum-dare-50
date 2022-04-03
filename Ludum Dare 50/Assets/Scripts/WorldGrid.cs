@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,9 +15,12 @@ public class WorldGrid : MonoBehaviour
     private List<Vector2> _tileCoords;
 
     private Camera _mainCamera;
-
-    private RaycastHit2D _lastTileHit;
     
+    private RaycastHit2D _lastTileHit;
+
+    public bool buildState = false;
+    public UnitType desiredUnit;
+
     #region Singleton
     private void Awake()
     {
@@ -58,8 +60,17 @@ public class WorldGrid : MonoBehaviour
 
     private void Update()
     {
+
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            buildState = true;
+            Debug.Log("Buildstate now true");
+            desiredUnit = UnitType.INFANTRY;
+            Debug.Log("Chosen unit: " + desiredUnit);
+        }
+
         // Create a ray to determine what tile we have hit.
-        
+
         RaycastHit2D hit = Physics2D.Raycast(
             _mainCamera.ScreenToWorldPoint(Input.mousePosition), 
             Vector2.zero,
@@ -81,7 +92,12 @@ public class WorldGrid : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                MenuManager.instance.ShowTileMenu(hitTile);    
+                MenuManager.instance.ShowTileMenu(hitTile);
+                if (buildState)
+                {
+                    SpawnManager.instance.SpawnAllyUnit(new Vector2(hitTile.XCoords, hitTile.YCoords), desiredUnit, hitTile);
+                    buildState = false;
+                }
             }
             
             _lastTileHit = hit;
