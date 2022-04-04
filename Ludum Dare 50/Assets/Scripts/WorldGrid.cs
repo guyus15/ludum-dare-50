@@ -241,10 +241,10 @@ public class WorldGrid : MonoBehaviour
                 }                
                 //Selects a tile and unit in the tile where applicable
                 else if (!(moveState || buildState || attackState))
-                {
+                {                    
                     selectedTile = hitTile;
                     Debug.Log("Tile selected");
-                    if (hitTile.TileOccupier != null)
+                    if (hitTile.TileOccupier != null && hitTile.TileOccupier.GetComponent<UnitBehaviour>().Allied)
                     {
                         selectedUnit = hitTile.TileOccupier;
                         Debug.Log("Unit selected");                                                
