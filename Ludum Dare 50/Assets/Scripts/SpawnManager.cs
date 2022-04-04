@@ -51,6 +51,7 @@ public class SpawnManager : MonoBehaviour
         }
 
         currentTile.TileOccupier = Instantiate(unitPrefab, new Vector3(spawnPos.x, spawnPos.y, 0f), transform.rotation, currentTile.transform);
+        currentTile.TileOccupier.GetComponent<UnitBehaviour>().Allied = true;
         Debug.Log("Spawned " + unitType + "at " + spawnPos.x + spawnPos.y);
     }
 

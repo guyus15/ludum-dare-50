@@ -24,7 +24,7 @@ public class UnitBehaviour : MonoBehaviour
     [SerializeField] private UnitType _unitType;
     [SerializeField] private TileAreaType _unitPrefTile;
 
-    public bool Allied { get; private set; }
+    public bool Allied { get; set; }
 
     
 

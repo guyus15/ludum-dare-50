@@ -75,6 +75,15 @@ public class WorldGrid : MonoBehaviour
             Debug.Log("Movestate = " + moveState);
             Debug.Log("Attackstate = " + attackState);
         }
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            buildState = true;
+            moveState = false;
+            attackState = false;
+            Debug.Log("Buildstate = " + buildState);
+            Debug.Log("Movestate = " + moveState);
+            Debug.Log("Attackstate = " + attackState);
+        }
         if (Input.GetKeyDown(KeyCode.A))
         {
             attackState = true;
@@ -142,6 +151,7 @@ public class WorldGrid : MonoBehaviour
                         case null:
                             {
                                 SpawnManager.instance.SpawnAllyUnit(new Vector2(hitTile.XCoords, hitTile.YCoords), desiredUnit, hitTile);
+                                Debug.Log("Spawning allied unit");
                                 buildState = false;
                                 Debug.Log("Buildstate = " + buildState);
                                 selectedTile = null;
@@ -183,28 +193,36 @@ public class WorldGrid : MonoBehaviour
                 //Attacks a unit if clicked tile holds an enemy
                 else if (attackState)
                 {
-                    switch (hitTile.TileOccupier)
+                    if (selectedTile == hitTile)
                     {
-                        case null:
-                            {
-                                Debug.Log("Invalid attack - Empty Tile");
-                                attackState = false;
-                                break;
-                            }
-                        default:
-                            {
-                                if (hitTile.TileOccupier.GetComponent<UnitBehaviour>().Allied)
+                        Debug.Log("Invalid Tile - Cannot attack self");
+                        attackState = false;
+                    }
+                    else
+                    {                    
+                        switch (hitTile.TileOccupier)
+                        {
+                            case null:
                                 {
-                                    Debug.Log("Cannot attack allied unit");                                    
+                                    Debug.Log("Invalid attack - Empty Tile");
+                                    attackState = false;
+                                    break;
                                 }
-                                else
+                            default:
                                 {
-                                    selectedUnit.GetComponent<UnitBehaviour>().AttackUnit(selectedUnit, hitTile.TileOccupier);
-                                    Debug.Log($"{selectedUnit} attacked {hitTile.TileOccupier}");
-                                }                                    
-                                attackState = false;
-                                break;
-                            }
+                                    if (hitTile.TileOccupier.GetComponent<UnitBehaviour>().Allied)
+                                    {
+                                        Debug.Log("Cannot attack allied unit");
+                                    }
+                                    else
+                                    {
+                                        selectedUnit.GetComponent<UnitBehaviour>().AttackUnit(selectedUnit, hitTile.TileOccupier);
+                                        Debug.Log($"{selectedUnit} attacked {hitTile.TileOccupier}");
+                                    }
+                                    attackState = false;
+                                    break;
+                                }
+                        }
                     }
                 }                
                 //Selects a tile and unit in the tile where applicable
