@@ -36,7 +36,7 @@ public class UnitBehaviour : MonoBehaviour
     {
         GameObject unit = selectedUnit;
         //Set selected units coord to the destination tiles coords
-        unit.transform.localPosition = new Vector3(destinationTile.XCoords, destinationTile.YCoords, 0f);
+        unit.transform.position = new Vector3(destinationTile.XCoords, destinationTile.YCoords, 0f);
     }
 
     void AttackLand()

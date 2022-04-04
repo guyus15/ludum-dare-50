@@ -18,7 +18,10 @@ public class WorldGrid : MonoBehaviour
     
     private RaycastHit2D _lastTileHit;
 
+    private WorldTile selectedTile;
     public bool buildState = false;
+    public bool moveState = false;
+    public GameObject selectedUnit = null;
     public UnitType desiredUnit;
 
     #region Singleton
@@ -55,15 +58,19 @@ public class WorldGrid : MonoBehaviour
 
         _mainCamera = Camera.main;
         
-        BuildWorld();
+        BuildWorld();       
     }
 
     private void Update()
     {
+        RaycastHit2D hit = HoveredTile();
+
         if(Input.GetKeyDown(KeyCode.B))
         {
             buildState = true;
+            moveState = false;
             Debug.Log("Buildstate now true");
+            Debug.Log("Movestate is " + moveState);
         }
         if (buildState)
         {
@@ -86,15 +93,11 @@ public class WorldGrid : MonoBehaviour
 
         // Create a ray to determine what tile we have hit.
 
-        RaycastHit2D hit = Physics2D.Raycast(
-            _mainCamera.ScreenToWorldPoint(Input.mousePosition), 
-            Vector2.zero,
-            Mathf.Infinity,
-            _tileLayerMask
-        );
+        
 
         if (hit.collider != null)
         {
+            //Highlighting hovered tile
             WorldTile hitTile = hit.collider.gameObject.GetComponent<WorldTile>();
             hitTile.HighlightTile(true);        
         
@@ -105,27 +108,41 @@ public class WorldGrid : MonoBehaviour
                 lastHitTile.HighlightTile(false);
             }
 
+            
             if (Input.GetMouseButtonDown(0))
             {
+                //Showing attributes of tile clicked
                 MenuManager.instance.ShowTileMenu(hitTile);
 
-                //GameObject selectedUnit = hitTile.TileOccupier;
-                //Debug.Log($"Selected {selectedUnit} at {hitTile.XCoords}, {hitTile.YCoords}");
-
+                //Spawn units to tile clicked on
                 if (buildState)
                 {
                     SpawnManager.instance.SpawnAllyUnit(new Vector2(hitTile.XCoords, hitTile.YCoords), desiredUnit, hitTile);
                     buildState = false;
-                }
-                /*if (selectedUnit != null)
+                }                                
+                else if (moveState && hitTile != selectedTile) //Move units to tile clicked on
                 {
                     selectedUnit.GetComponent<UnitBehaviour>().MoveToTile(selectedUnit, hitTile);
                     Debug.Log($"Moved {selectedUnit} to {hitTile.XCoords}, {hitTile.YCoords}");
+                    moveState = false;
                 }
-                */
-                
+                else if (hitTile != selectedTile)
+                {
+                    selectedTile = hitTile;
+                    Debug.Log("Selected Tile");
+
+                    if (hitTile.TileOccupier != null)
+                    {
+                        selectedUnit = hitTile.TileOccupier;
+                        Debug.Log("Selected Unit");
+                        moveState = true;
+                        Debug.Log("Movestate is now true");
+
+                    }
+
+                }
             }
-            
+
             _lastTileHit = hit;
         }
         else if (_lastTileHit.collider != null)
@@ -157,4 +174,16 @@ public class WorldGrid : MonoBehaviour
         return _gridSize;
     }
 
+    
+    public RaycastHit2D HoveredTile()
+    {
+        // Create a ray to determine what tile we have hit.
+        RaycastHit2D hit = Physics2D.Raycast(
+            _mainCamera.ScreenToWorldPoint(Input.mousePosition),
+            Vector2.zero,
+            Mathf.Infinity,
+            _tileLayerMask
+        );
+        return hit;
+    }
 }
