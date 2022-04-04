@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,8 +27,6 @@ public class UnitBehaviour : MonoBehaviour
 
     public bool Allied { get; set; }
 
-    
-
     //Movement
     //Attacking 
     //Disband
@@ -36,8 +35,7 @@ public class UnitBehaviour : MonoBehaviour
 
     public void MoveToTile(GameObject selectedUnit, WorldTile selectedTile, WorldTile destinationTile)
     {
-            
-        //Set selected units coord to the destination tiles coords
+        // Set selected units coord to the destination tiles coords
         selectedUnit.transform.position = new Vector3(destinationTile.XCoords, destinationTile.YCoords, 0f);
         selectedUnit.transform.parent = destinationTile.transform;
         selectedTile.TileOccupier = null;
@@ -66,13 +64,57 @@ public class UnitBehaviour : MonoBehaviour
         {
             return false;
         }
-        else
-        {
-            return true;
-        }
-        
+
+        return true;
     }
 
+    public void MoveRandomly(GameObject sourceObject, WorldTile sourceTile)
+    {
+        // Get adjacent tiles
+        List<WorldTile> adjacentTiles = new List<WorldTile>();
+
+        foreach (GameObject worldTileObject in WorldGrid.instance.GetWorldTiles())
+        {
+            WorldTile destTile = worldTileObject.GetComponent<WorldTile>();
+
+            // If the tile is not adjacent, skip it.
+            if (Mathf.Pow((sourceTile.XCoords - destTile.XCoords), 2f) > 1 ||
+                Mathf.Pow((sourceTile.YCoords - destTile.YCoords), 2f) > 1)
+            {
+                continue;;
+            }
+
+            // Ensure that an enemy can't move into a tile where an enemy is already present.
+            if (destTile.TileOccupier != null)
+            {
+                UnitBehaviour destTileBehaviour = destTile.TileOccupier.GetComponent<UnitBehaviour>();
+                if (destTileBehaviour != null && !destTileBehaviour.Allied)
+                {
+                    continue;
+                }
+            }
+
+            // Ensure that an enemy can't move into spawn tiles.
+            if (destTile.TileArea == TileAreaType.SPAWN)
+            {
+                continue;
+            }
+            
+            adjacentTiles.Add(destTile);
+        }
+        
+        WorldTile chosenTile = adjacentTiles[UnityEngine.Random.Range(0, adjacentTiles.Count)];
+
+        if (chosenTile.TileOccupier != null)
+        {
+            GameObject chosenGameObject = chosenTile.TileOccupier;
+            
+            AttackUnit(sourceObject, chosenGameObject);
+        }
+
+        MoveToTile(sourceObject, sourceTile, chosenTile);
+    }
+    
     void DisbandUnit()
     {
         //Get selected unit
