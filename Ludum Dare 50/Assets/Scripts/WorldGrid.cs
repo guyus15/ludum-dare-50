@@ -97,14 +97,14 @@ public class WorldGrid : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
-            if (selectedUnit != null)
+            if (_selectedUnit != null)
             {
-                attackState = true;
-                buildState = false;
-                moveState = false;
-                Debug.Log("Attackstate = " + attackState);
-                Debug.Log("Buildstate = " + buildState);
-                Debug.Log("Movestate = " + moveState);
+                _attackState = true;
+                _buildState = false;
+                _moveState = false;
+                Debug.Log("Attackstate = " + _attackState);
+                Debug.Log("Buildstate = " + _buildState);
+                Debug.Log("Movestate = " + _moveState);
             }
             else
             {
@@ -113,14 +113,14 @@ public class WorldGrid : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.M))
         {
-            if (selectedUnit != null)
+            if (_selectedUnit != null)
             {
-                attackState = false;
-                buildState = false;
-                moveState = true;
-                Debug.Log("Attackstate = " + attackState);
-                Debug.Log("Buildstate = " + buildState);
-                Debug.Log("Movestate = " + moveState);
+                _attackState = false;
+                _buildState = false;
+                _moveState = true;
+                Debug.Log("Attackstate = " + _attackState);
+                Debug.Log("Buildstate = " + _buildState);
+                Debug.Log("Movestate = " + _moveState);
             }
             else
             {
@@ -251,15 +251,11 @@ public class WorldGrid : MonoBehaviour
                     }
                 }                
                 //Selects a tile and unit in the tile where applicable
-<<<<<<< HEAD
-                else if (!(moveState || buildState || attackState))
-                {                    
-                    selectedTile = hitTile;
-=======
+
                 else if (!(_moveState || _buildState || _attackState))
                 {
                     _selectedTile = hitTile;
->>>>>>> 329489fe3e22d5f5221d1e56b6da04ae2248aef6
+
                     Debug.Log("Tile selected");
                     if (hitTile.TileOccupier != null && hitTile.TileOccupier.GetComponent<UnitBehaviour>().Allied)
                     {
