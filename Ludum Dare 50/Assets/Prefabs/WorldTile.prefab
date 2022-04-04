@@ -96,12 +96,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19ad966b5627da344ae642fe67cd2b36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _farmlandTileSprite: {fileID: 21300000, guid: d29b0daa389792b40a93e18b847573bd, type: 3}
+  _farmlandTileSprite: {fileID: 21300000, guid: 63f5bbae340fed54f8f8c05faecaf8f2, type: 3}
   _forestTileSprite: {fileID: 21300000, guid: 88b316fd69cbcd44aa03968147bc4fc0, type: 3}
   _mountainTileSprite: {fileID: 21300000, guid: cf969345daad6554dbe633371119e566, type: 3}
   _fortressTileSprite: {fileID: 21300000, guid: ec5000ffd9aadb34aabcdfe33cf097ed, type: 3}
   _cityTileSprite: {fileID: 21300000, guid: 47f25aee5eab3b04882bbfb5083921ba, type: 3}
-  _mineTileSprite: {fileID: 21300000, guid: 735fd0cae2d29f24bbf18ae8f57bba75, type: 3}
+  _mineTileSprite: {fileID: 21300000, guid: 656d6f91ea0a04b4abd792fb54fd9de8, type: 3}
   _plainsTileSprite: {fileID: 21300000, guid: f124bd23a87d7a144bf955b8b35f2f42, type: 3}
   _spawnTileSprite: {fileID: 21300000, guid: fe57e0a797e00bb4d8f5f7251fb585d7, type: 3}
   _unknownTileSprite: {fileID: 21300000, guid: 2418c47ffe7a00e4f9be6a48e96707b0, type: 3}
