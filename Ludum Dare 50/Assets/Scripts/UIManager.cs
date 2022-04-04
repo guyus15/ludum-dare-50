@@ -9,7 +9,20 @@ public class UIManager : MonoBehaviour
 
     public int width;
     public int height;
+    [SerializeField] private GameObject _optionsMenu;
 
+    private void Start()
+    {
+        _optionsMenu.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            OpenMenu(_optionsMenu);
+        }
+    }
     public void SetWidth(int newWidth)
     {
         width = newWidth;
@@ -34,5 +47,20 @@ public class UIManager : MonoBehaviour
     public void ExitGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void OpenMenu(GameObject menu)
+    {
+        menu.SetActive(true);
+    }
+
+public void ExitMenu(GameObject menu)
+    {
+        menu.SetActive(false);
     }
 }
