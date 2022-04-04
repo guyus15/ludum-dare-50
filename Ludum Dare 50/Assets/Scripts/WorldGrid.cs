@@ -97,21 +97,35 @@ public class WorldGrid : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
-            _attackState = true;
-            _buildState = false;
-            _moveState = false;
-            Debug.Log("Attackstate = " + _attackState);
-            Debug.Log("Buildstate = " + _buildState);
-            Debug.Log("Movestate = " + _moveState);
+            if (selectedUnit != null)
+            {
+                attackState = true;
+                buildState = false;
+                moveState = false;
+                Debug.Log("Attackstate = " + attackState);
+                Debug.Log("Buildstate = " + buildState);
+                Debug.Log("Movestate = " + moveState);
+            }
+            else
+            {
+                Debug.Log("Cannont enter movestate without a unit selected");
+            }
         }
         if (Input.GetKeyDown(KeyCode.M))
         {
-            _attackState = false;
-            _buildState = false;
-            _moveState = true;
-            Debug.Log("Attackstate = " + _attackState);
-            Debug.Log("Buildstate = " + _buildState);
-            Debug.Log("Movestate = " + _moveState);
+            if (selectedUnit != null)
+            {
+                attackState = false;
+                buildState = false;
+                moveState = true;
+                Debug.Log("Attackstate = " + attackState);
+                Debug.Log("Buildstate = " + buildState);
+                Debug.Log("Movestate = " + moveState);
+            }
+            else
+            {
+                Debug.Log("Cannont enter movestate without a unit selected");
+            }
         }
         if (_buildState)
         {
@@ -308,7 +322,7 @@ public class WorldGrid : MonoBehaviour
                 tile.transform.rotation,
                 tile.transform
             );
-            
+
             worldTile.TileOccupier = enemy;
         }
     }
