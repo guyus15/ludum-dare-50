@@ -14,10 +14,15 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         _optionsMenu.SetActive(false);
-
-
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            OpenMenu(_optionsMenu);
+        }
+    }
     public void SetWidth(int newWidth)
     {
         width = newWidth;

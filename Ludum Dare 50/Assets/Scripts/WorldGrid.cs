@@ -104,7 +104,7 @@ public class WorldGrid : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
-            if ( _selectedUnit != null)
+            if (_selectedUnit != null)
             {
                 _attackState = true;
                 _buildState = false;
@@ -259,7 +259,7 @@ public class WorldGrid : MonoBehaviour
                 else if (!(_moveState || _buildState || _attackState))
                 {
                     _selectedTile = hitTile;
-                    
+
                     Debug.Log("Tile selected");
                     if (hitTile.TileOccupier != null && hitTile.TileOccupier.GetComponent<UnitBehaviour>().Allied)
                     {
