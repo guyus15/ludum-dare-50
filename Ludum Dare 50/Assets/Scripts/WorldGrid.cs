@@ -5,15 +5,14 @@ public class WorldGrid : MonoBehaviour
 {
     public static WorldGrid instance;
 
-    private Vector2 _startingCoords;
-    
     [SerializeField] private int _gridSize = 10;
     [SerializeField] private GameObject _worldTilePrefab;
     [SerializeField] private GameObject _tileContainer;
     [SerializeField] private LayerMask _tileLayerMask;
     
     private List<Vector2> _tileCoords;
-
+    private List<GameObject> _spawnTileObjects;
+    
     private Camera _mainCamera;
     
     private RaycastHit2D _lastTileHit;
@@ -42,18 +41,18 @@ public class WorldGrid : MonoBehaviour
     private void Start()
     {
         // Create the world tiles for the game.
-        _startingCoords = Vector2.zero;
         _tileCoords = new List<Vector2>();
+        _spawnTileObjects = new List<GameObject>();
 
         int currentRow = 0;
         
         for (int i = 0; i < _gridSize * _gridSize; i++)
         {
-            if (i % _gridSize == 0)
+            if (i % _gridSize == 0 && i != 0)
             {
                 currentRow++;
             }
-
+            
             _tileCoords.Add(new Vector2(i % _gridSize, currentRow));
         }
 
@@ -118,7 +117,7 @@ public class WorldGrid : MonoBehaviour
             {
                 desiredUnit = UnitType.CAVALRY;
                 Debug.Log("Chosen unit: " + desiredUnit);
-            }           
+            }
         }
 
         // Create a ray to determine what tile we have hit.
@@ -255,6 +254,8 @@ public class WorldGrid : MonoBehaviour
 
     private void BuildWorld()
     {
+        // Handle building special tiles on which enemies can spawn.
+        
         foreach (Vector2 coords in _tileCoords)
         {
             Vector3 convertedCoords = new Vector3(coords.x - (_gridSize / 2) + 0.5f, coords.y - (_gridSize / 2), 0f);
@@ -265,16 +266,38 @@ public class WorldGrid : MonoBehaviour
                 transform.rotation,
                 _tileContainer.transform
             );
+            
+            WorldTile newWorldTile = newTile.GetComponent<WorldTile>();
 
-            newTile.GetComponent<WorldTile>().SetCoordinates(convertedCoords.x, convertedCoords.y);
+            newWorldTile.SetCoordinates(convertedCoords.x, convertedCoords.y);
+            
+            // Determine if the tile is a spawn tile.
+            if (coords.x == 0 || coords.y == 0 || coords.x == _gridSize - 1 || coords.y == _gridSize - 1)
+            {
+                newWorldTile.MarkAsSpawnTile();
+                _spawnTileObjects.Add(newTile);
+            }
         }
     }
 
+    public void SpawnEnemies()
+    {
+        foreach (GameObject tile in _spawnTileObjects)
+        {
+            int shouldSpawn = UnityEngine.Random.Range(0, 2);
+            if (shouldSpawn != 0) continue;
+            
+            WorldTile worldTile = tile.GetComponent<WorldTile>();
+
+            // TODO: finish enemy spawning!
+            worldTile.TileOccupierEnemy = null;
+        }
+    }
+    
     public int GetGridSize()
     {
         return _gridSize;
     }
-
     
     public RaycastHit2D HoveredTile()
     {
