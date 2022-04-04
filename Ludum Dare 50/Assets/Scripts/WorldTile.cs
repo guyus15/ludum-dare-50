@@ -9,7 +9,8 @@ public enum TileAreaType
     FORTRESS,
     CITY,
     MINE,
-    PLAINS
+    PLAINS,
+    SPAWN
 }
 
 public enum TileResourceType
@@ -32,6 +33,7 @@ public class WorldTile : MonoBehaviour
     [SerializeField] private Sprite _cityTileSprite;
     [SerializeField] private Sprite _mineTileSprite;
     [SerializeField] private Sprite _plainsTileSprite;
+    [SerializeField] private Sprite _spawnTileSprite;
     [SerializeField] private Sprite _unknownTileSprite;
 
     public float XCoords { get; private set; }
@@ -49,27 +51,26 @@ public class WorldTile : MonoBehaviour
 
     private SpriteRenderer _spriteRenderer;
     public Sprite TileSprite { get; private set; }
-
+    
     public GameObject TileOccupier { get; set; }
-
-
-    private void Start()
+    
+    private void Awake()
     {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        
         UnderAttack = false;
         EnemyOwned = false;
 
         // Picking a random area and resource type for the tile.
         
         Array tileAreaTypes = Enum.GetValues(typeof(TileAreaType));
-        TileArea = (TileAreaType)tileAreaTypes.GetValue(UnityEngine.Random.Range(0, tileAreaTypes.Length));
+        TileArea = (TileAreaType)tileAreaTypes.GetValue(UnityEngine.Random.Range(0, tileAreaTypes.Length - 1));
         
         TileResource = TileResourceType.FOOD;
-
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-
+        
         AssignTileSprite();
     }
-
+    
     public void SetCoordinates(float xCoords, float yCoords)
     {
         XCoords = xCoords;
@@ -101,12 +102,15 @@ public class WorldTile : MonoBehaviour
             case TileAreaType.PLAINS:
                 TileSprite = _plainsTileSprite;
                 break;
+            case TileAreaType.SPAWN:
+                TileSprite = _spawnTileSprite;
+                break;
             default:
                 TileSprite = _unknownTileSprite;
                 Debug.Log("A tile sprite does not exist for this tile type.");
                 break;
         }
-        
+
         _spriteRenderer.sprite = TileSprite;
     }
 
@@ -116,6 +120,12 @@ public class WorldTile : MonoBehaviour
             : new Color(1f, 1f, 1f, 1f);
     }
 
+    public void MarkAsSpawnTile()
+    {
+        TileArea = TileAreaType.SPAWN;
+        AssignTileSprite();
+    }
+    
     public static int GetTileSize()
     {
         return TILE_SIZE;
