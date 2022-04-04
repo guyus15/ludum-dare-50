@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum TileAreaType
 {
@@ -46,16 +47,22 @@ public class WorldTile : MonoBehaviour
     public int Income { get; private set; }
 
     public TileAreaType TileArea { get; private set; }
-    public TileResourceType TileResource { get; private set; }
-
-    private SpriteRenderer _spriteRenderer;
+    
     public Sprite TileSprite { get; private set; }
     
     public GameObject TileOccupier { get; set; }
 
+    [SerializeField] private GameObject _colourTile;
+    
+    private SpriteRenderer _spriteRenderer;
+    private SpriteRenderer _colourTileSpriteRenderer;
+    
     private void Awake()
     {
+        _colourTile.SetActive(false);
+        
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _colourTileSpriteRenderer = _colourTile.GetComponent<SpriteRenderer>();
         
         UnderAttack = false;
         EnemyOwned = false;
@@ -64,10 +71,39 @@ public class WorldTile : MonoBehaviour
         
         Array tileAreaTypes = Enum.GetValues(typeof(TileAreaType));
         TileArea = (TileAreaType)tileAreaTypes.GetValue(UnityEngine.Random.Range(0, tileAreaTypes.Length - 1));
-        
-        TileResource = TileResourceType.FOOD;
-        
+
         AssignTileSprite();
+    }
+
+    private void Update()
+    {
+        if (TileOccupier != null)
+        {
+            UnitBehaviour unit = TileOccupier.GetComponent<UnitBehaviour>();
+
+            if (unit.Allied)
+            {
+                _colourTile.SetActive(true);
+                _colourTileSpriteRenderer.color =  new Color(0, 0, 255, 128);
+            }
+            else
+            {
+                _colourTile.SetActive(true);
+                _colourTileSpriteRenderer.color =  new Color(255, 0, 0, 128);
+            }
+            
+            return;
+        }
+
+        if (EnemyOwned)
+        {
+            _colourTile.SetActive(true);
+            _colourTileSpriteRenderer.color = new Color(0, 0, 0, 128);
+        }
+        else
+        {
+            _colourTile.SetActive(false);
+        }
     }
     
     public void SetCoordinates(float xCoords, float yCoords)
