@@ -47,8 +47,30 @@ public class UnitBehaviour : MonoBehaviour
 
     public void AttackUnit(GameObject attacker, GameObject defender)
     {
-        attacker.GetComponent<UnitBehaviour>()._unitHealth -= defender.GetComponent<UnitBehaviour>()._unitStrength;
-        defender.GetComponent<UnitBehaviour>()._unitHealth -= attacker.GetComponent<UnitBehaviour>()._unitStrength;                
+        if (CheckAdjacency(attacker, defender))
+        {
+            attacker.GetComponent<UnitBehaviour>()._unitHealth -= defender.GetComponent<UnitBehaviour>()._unitStrength;
+            defender.GetComponent<UnitBehaviour>()._unitHealth -= attacker.GetComponent<UnitBehaviour>()._unitStrength;
+            Debug.Log($"{attacker} attacked {defender}");
+        }
+        else
+        {
+            Debug.Log("These units are not adjacent");
+        }
+    }
+
+    public bool CheckAdjacency(GameObject unit1, GameObject unit2)
+    {
+        if (Mathf.Pow((unit1.GetComponentInParent<WorldTile>().XCoords - unit2.GetComponentInParent<WorldTile>().XCoords), 2f) > 1  || 
+            Mathf.Pow((unit1.GetComponentInParent<WorldTile>().YCoords - unit2.GetComponentInParent<WorldTile>().YCoords), 2f) > 1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+        
     }
 
     void DisbandUnit()
