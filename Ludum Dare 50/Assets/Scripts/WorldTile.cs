@@ -53,7 +53,8 @@ public class WorldTile : MonoBehaviour
     public Sprite TileSprite { get; private set; }
     
     public GameObject TileOccupier { get; set; }
-    
+    public GameObject TileOccupierEnemy { get; set; }
+
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();

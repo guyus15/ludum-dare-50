@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-
     public static SpawnManager instance;
 
     [SerializeField] private GameObject _infantryPrefab;

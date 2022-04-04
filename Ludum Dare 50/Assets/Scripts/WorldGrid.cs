@@ -38,6 +38,7 @@ public class WorldGrid : MonoBehaviour
     {
         // Create the world tiles for the game.
         _tileCoords = new List<Vector2>();
+        _spawnTileObjects = new List<GameObject>();
 
         int currentRow = 0;
         
@@ -161,6 +162,20 @@ public class WorldGrid : MonoBehaviour
         }
     }
 
+    public void SpawnEnemies()
+    {
+        foreach (GameObject tile in _spawnTileObjects)
+        {
+            int shouldSpawn = UnityEngine.Random.Range(0, 2);
+            if (shouldSpawn != 0) continue;
+            
+            WorldTile worldTile = tile.GetComponent<WorldTile>();
+
+            // TODO: finish enemy spawning!
+            worldTile.TileOccupierEnemy = null;
+        }
+    }
+    
     public int GetGridSize()
     {
         return _gridSize;
