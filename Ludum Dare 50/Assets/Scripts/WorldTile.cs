@@ -44,7 +44,6 @@ public class WorldTile : MonoBehaviour
 
     public int TurnsUnderAttack { get; private set; }
     public int Income { get; private set; }
-    public int Population { get; private set; }
 
     public TileAreaType TileArea { get; private set; }
     public TileResourceType TileResource { get; private set; }
@@ -53,7 +52,6 @@ public class WorldTile : MonoBehaviour
     public Sprite TileSprite { get; private set; }
     
     public GameObject TileOccupier { get; set; }
-    public GameObject TileOccupierEnemy { get; set; }
 
     private void Awake()
     {
@@ -84,24 +82,31 @@ public class WorldTile : MonoBehaviour
         {
             case TileAreaType.FARMLAND:
                 TileSprite = _farmlandTileSprite;
+                Income = Constants.FARMLAND_TURN_INCOME;
                 break;
             case TileAreaType.FOREST:
                 TileSprite = _forestTileSprite;
+                Income = Constants.FOREST_TURN_INCOME;
                 break;
             case TileAreaType.MOUNTAIN:
                 TileSprite = _mountainTileSprite;
+                Income = Constants.MOUNTAIN_TURN_INCOME;
                 break;
             case TileAreaType.FORTRESS:
                 TileSprite = _fortressTileSprite;
+                Income = Constants.FORTRESS_TURN_INCOME;
                 break;
             case TileAreaType.MINE:
                 TileSprite = _mineTileSprite;
+                Income = Constants.MINE_TURN_INCOME;
                 break;
             case TileAreaType.CITY:
                 TileSprite = _cityTileSprite;
+                Income = Constants.CITY_TURN_INCOME;
                 break;
             case TileAreaType.PLAINS:
                 TileSprite = _plainsTileSprite;
+                Income = Constants.PLAINS_TURN_INCOME;
                 break;
             case TileAreaType.SPAWN:
                 TileSprite = _spawnTileSprite;
