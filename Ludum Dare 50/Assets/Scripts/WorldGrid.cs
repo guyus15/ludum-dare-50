@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,20 +6,23 @@ public class WorldGrid : MonoBehaviour
 {
     public static WorldGrid instance;
 
-    private Vector2 _startingCoords;
-    
     [SerializeField] private int _gridSize = 10;
     [SerializeField] private GameObject _worldTilePrefab;
     [SerializeField] private GameObject _tileContainer;
     [SerializeField] private LayerMask _tileLayerMask;
     
     private List<Vector2> _tileCoords;
-
+    private List<GameObject> _spawnTileObjects;
+    
     private Camera _mainCamera;
     
     private RaycastHit2D _lastTileHit;
 
+    private WorldTile selectedTile = null;
     public bool buildState = false;
+    public bool moveState = false;
+    public bool attackState = false;
+    public GameObject selectedUnit = null;
     public UnitType desiredUnit;
 
     #region Singleton
@@ -38,32 +42,65 @@ public class WorldGrid : MonoBehaviour
     private void Start()
     {
         // Create the world tiles for the game.
-        _startingCoords = Vector2.zero;
         _tileCoords = new List<Vector2>();
+        _spawnTileObjects = new List<GameObject>();
 
         int currentRow = 0;
         
         for (int i = 0; i < _gridSize * _gridSize; i++)
         {
-            if (i % _gridSize == 0)
+            if (i % _gridSize == 0 && i != 0)
             {
                 currentRow++;
             }
-
+            
             _tileCoords.Add(new Vector2(i % _gridSize, currentRow));
         }
 
         _mainCamera = Camera.main;
         
-        BuildWorld();
+        BuildWorld();       
     }
 
     private void Update()
     {
+        RaycastHit2D hit = HoveredTile();
+
         if(Input.GetKeyDown(KeyCode.B))
         {
             buildState = true;
-            Debug.Log("Buildstate now true");
+            moveState = false;
+            attackState = false;
+            Debug.Log("Buildstate = " + buildState);
+            Debug.Log("Movestate = " + moveState);
+            Debug.Log("Attackstate = " + attackState);
+        }
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            buildState = true;
+            moveState = false;
+            attackState = false;
+            Debug.Log("Buildstate = " + buildState);
+            Debug.Log("Movestate = " + moveState);
+            Debug.Log("Attackstate = " + attackState);
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            attackState = true;
+            buildState = false;
+            moveState = false;
+            Debug.Log("Attackstate = " + attackState);
+            Debug.Log("Buildstate = " + buildState);
+            Debug.Log("Movestate = " + moveState);
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            attackState = false;
+            buildState = false;
+            moveState = true;
+            Debug.Log("Attackstate = " + attackState);
+            Debug.Log("Buildstate = " + buildState);
+            Debug.Log("Movestate = " + moveState);
         }
         if (buildState)
         {
@@ -81,49 +118,130 @@ public class WorldGrid : MonoBehaviour
             {
                 desiredUnit = UnitType.CAVALRY;
                 Debug.Log("Chosen unit: " + desiredUnit);
-            }           
+            }
         }
 
         // Create a ray to determine what tile we have hit.
 
-        RaycastHit2D hit = Physics2D.Raycast(
-            _mainCamera.ScreenToWorldPoint(Input.mousePosition), 
-            Vector2.zero,
-            Mathf.Infinity,
-            _tileLayerMask
-        );
+        
 
         if (hit.collider != null)
         {
+            //Highlighting hovered tile
             WorldTile hitTile = hit.collider.gameObject.GetComponent<WorldTile>();
-            hitTile.HighlightTile(true);        
-        
+            hitTile.HighlightTile(true);
+                    
             if (!hit.collider.Equals(_lastTileHit.collider) && _lastTileHit.collider != null)
             {
                 WorldTile lastHitTile = _lastTileHit.collider.gameObject.GetComponent<WorldTile>();
 
                 lastHitTile.HighlightTile(false);
             }
-
+            
             if (Input.GetMouseButtonDown(0))
             {
+                //Showing attributes of tile clicked
                 MenuManager.instance.ShowTileMenu(hitTile);
 
-                //GameObject selectedUnit = hitTile.TileOccupier;
-                //Debug.Log($"Selected {selectedUnit} at {hitTile.XCoords}, {hitTile.YCoords}");
-
+                //Spawn units to tile clicked on
                 if (buildState)
                 {
-                    SpawnManager.instance.SpawnAllyUnit(new Vector2(hitTile.XCoords, hitTile.YCoords), desiredUnit, hitTile);
-                    buildState = false;
+                    switch (hitTile.TileOccupier)
+                    {
+                        case null:
+                            {
+                                SpawnManager.instance.SpawnAllyUnit(new Vector2(hitTile.XCoords, hitTile.YCoords), desiredUnit, hitTile);
+                                Debug.Log("Spawning allied unit");
+                                buildState = false;
+                                Debug.Log("Buildstate = " + buildState);
+                                selectedTile = null;
+                                break;
+                            }
+                        default:
+                            {
+                                Debug.Log("Unable to spawn");
+                                buildState = false;
+                                break;
+                            }
+                    }
+                    
                 }
-                /*if (selectedUnit != null)
+                //Moves selected unit to clicked tile if tile is empty
+                else if (moveState)
                 {
-                    selectedUnit.GetComponent<UnitBehaviour>().MoveToTile(selectedUnit, hitTile);
-                    Debug.Log($"Moved {selectedUnit} to {hitTile.XCoords}, {hitTile.YCoords}");
+                    switch (hitTile.TileOccupier)
+                    {
+                        case null:
+                            {
+                                selectedUnit.GetComponent<UnitBehaviour>().MoveToTile(selectedUnit, selectedTile, hitTile);
+                                Debug.Log($"Moved {selectedUnit} to {hitTile.XCoords}, {hitTile.YCoords}");
+                                moveState = false;
+                                Debug.Log("Buildstate = " + buildState);
+                                selectedTile = null;
+                                selectedUnit = null;
+                                break;
+                            }
+                        default:
+                            {                                
+                                Debug.Log("Tile Occupied");
+                                moveState = false;
+                                break;
+                            }
+                    }
+
                 }
-                */
-                
+                //Attacks a unit if clicked tile holds an enemy
+                else if (attackState)
+                {
+                    if (selectedTile == hitTile)
+                    {
+                        Debug.Log("Invalid Tile - Cannot attack self");
+                        attackState = false;
+                    }
+                    else
+                    {                    
+                        switch (hitTile.TileOccupier)
+                        {
+                            case null:
+                                {
+                                    Debug.Log("Invalid attack - Empty Tile");
+                                    attackState = false;
+                                    break;
+                                }
+                            default:
+                                {
+                                    if (hitTile.TileOccupier.GetComponent<UnitBehaviour>().Allied)
+                                    {
+                                        Debug.Log("Cannot attack allied unit");
+                                    }
+                                    else
+                                    {
+                                        selectedUnit.GetComponent<UnitBehaviour>().AttackUnit(selectedUnit, hitTile.TileOccupier);
+                                        Debug.Log($"{selectedUnit} attacked {hitTile.TileOccupier}");
+                                    }
+                                    attackState = false;
+                                    break;
+                                }
+                        }
+                    }
+                }                
+                //Selects a tile and unit in the tile where applicable
+                else if (!(moveState || buildState || attackState))
+                {
+                    selectedTile = hitTile;
+                    Debug.Log("Tile selected");
+                    if (hitTile.TileOccupier != null)
+                    {
+                        selectedUnit = hitTile.TileOccupier;
+                        Debug.Log("Unit selected");                                                
+                    }
+                    else
+                    {
+                        selectedUnit = null;
+                        Debug.Log("Deselected Unit");
+                    }
+                }
+
             }
             
             _lastTileHit = hit;
@@ -137,6 +255,8 @@ public class WorldGrid : MonoBehaviour
 
     private void BuildWorld()
     {
+        // Handle building special tiles on which enemies can spawn.
+        
         foreach (Vector2 coords in _tileCoords)
         {
             Vector3 convertedCoords = new Vector3(coords.x - (_gridSize / 2) + 0.5f, coords.y - (_gridSize / 2), 0f);
@@ -147,14 +267,54 @@ public class WorldGrid : MonoBehaviour
                 transform.rotation,
                 _tileContainer.transform
             );
+            
+            WorldTile newWorldTile = newTile.GetComponent<WorldTile>();
 
-            newTile.GetComponent<WorldTile>().SetCoordinates(convertedCoords.x, convertedCoords.y);
+            newWorldTile.SetCoordinates(convertedCoords.x, convertedCoords.y);
+            
+            // Determine if the tile is a spawn tile.
+            if (coords.x == 0 || coords.y == 0 || coords.x == _gridSize - 1 || coords.y == _gridSize - 1)
+            {
+                newWorldTile.MarkAsSpawnTile();
+                _spawnTileObjects.Add(newTile);
+            }
         }
     }
 
+    public void SpawnEnemies()
+    {
+        foreach (GameObject tile in _spawnTileObjects)
+        {
+            int shouldSpawn = UnityEngine.Random.Range(0, 2);
+            if (shouldSpawn != 0) continue;
+            
+            WorldTile worldTile = tile.GetComponent<WorldTile>();
+
+            GameObject enemy = Instantiate(
+                SpawnManager.instance.GetInfantryPrefab(),
+                new Vector2(worldTile.XCoords, worldTile.YCoords),
+                tile.transform.rotation,
+                tile.transform
+            );
+            
+            worldTile.TileOccupierEnemy = enemy;
+        }
+    }
+    
     public int GetGridSize()
     {
         return _gridSize;
     }
-
+    
+    public RaycastHit2D HoveredTile()
+    {
+        // Create a ray to determine what tile we have hit.
+        RaycastHit2D hit = Physics2D.Raycast(
+            _mainCamera.ScreenToWorldPoint(Input.mousePosition),
+            Vector2.zero,
+            Mathf.Infinity,
+            _tileLayerMask
+        );
+        return hit;
+    }
 }

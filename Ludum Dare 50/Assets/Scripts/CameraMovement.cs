@@ -45,8 +45,6 @@ public class CameraMovement : MonoBehaviour
 
             int gridLength = WorldGrid.instance.GetGridSize();
 
-            Debug.Log(gridLength);
-            
             float xPos = transform.position.x;
             float yPos = transform.position.y;
             
