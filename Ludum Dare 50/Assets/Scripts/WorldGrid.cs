@@ -97,14 +97,14 @@ public class WorldGrid : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
-            if (selectedUnit != null)
+            if ( _selectedUnit != null)
             {
-                attackState = true;
-                buildState = false;
-                moveState = false;
-                Debug.Log("Attackstate = " + attackState);
-                Debug.Log("Buildstate = " + buildState);
-                Debug.Log("Movestate = " + moveState);
+                _attackState = true;
+                _buildState = false;
+                _moveState = false;
+                Debug.Log("Attackstate = " + _attackState);
+                Debug.Log("Buildstate = " + _buildState);
+                Debug.Log("Movestate = " + _moveState);
             }
             else
             {
@@ -113,14 +113,14 @@ public class WorldGrid : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.M))
         {
-            if (selectedUnit != null)
+            if (_selectedUnit != null)
             {
-                attackState = false;
-                buildState = false;
-                moveState = true;
-                Debug.Log("Attackstate = " + attackState);
-                Debug.Log("Buildstate = " + buildState);
-                Debug.Log("Movestate = " + moveState);
+                _attackState = false;
+                _buildState = false;
+                _moveState = true;
+                Debug.Log("Attackstate = " + _attackState);
+                Debug.Log("Buildstate = " + _buildState);
+                Debug.Log("Movestate = " + _moveState);
             }
             else
             {
@@ -242,7 +242,6 @@ public class WorldGrid : MonoBehaviour
                                     else
                                     {
                                         _selectedUnit.GetComponent<UnitBehaviour>().AttackUnit(_selectedUnit, hitTile.TileOccupier);
-                                        Debug.Log($"{_selectedUnit} attacked {hitTile.TileOccupier}");
                                     }
                                     _attackState = false;
                                     break;
