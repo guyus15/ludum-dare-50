@@ -1,6 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class WorldGrid : MonoBehaviour
 {
@@ -19,6 +19,8 @@ public class WorldGrid : MonoBehaviour
     
     private RaycastHit2D _lastTileHit;
 
+    private EventSystem _eventSystem;
+    
     private WorldTile _selectedTile = null;
     
     private bool _buildState = false;
@@ -32,8 +34,8 @@ public class WorldGrid : MonoBehaviour
     public int GridIncome { get; set; }
     public int GridControlledAreas { get; set; }
     public int GridEnemyOwnedAreas { get; set; }
-
-
+    
+    
     #region Singleton
     private void Awake()
     {
@@ -73,6 +75,11 @@ public class WorldGrid : MonoBehaviour
     }
     #endregion
 
+    private void Start()
+    {
+        _eventSystem = FindObjectOfType<EventSystem>();
+    }
+    
     private void Update()
     {
         RaycastHit2D hit = HoveredTile();
@@ -147,10 +154,8 @@ public class WorldGrid : MonoBehaviour
         }
 
         // Create a ray to determine what tile we have hit.
-
         
-
-        if (hit.collider != null)
+        if (hit.collider != null && !_eventSystem.IsPointerOverGameObject())
         {
             //Highlighting hovered tile
             WorldTile hitTile = hit.collider.gameObject.GetComponent<WorldTile>();
