@@ -86,21 +86,35 @@ public class WorldGrid : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
-            attackState = true;
-            buildState = false;
-            moveState = false;
-            Debug.Log("Attackstate = " + attackState);
-            Debug.Log("Buildstate = " + buildState);
-            Debug.Log("Movestate = " + moveState);
+            if (selectedUnit != null)
+            {
+                attackState = true;
+                buildState = false;
+                moveState = false;
+                Debug.Log("Attackstate = " + attackState);
+                Debug.Log("Buildstate = " + buildState);
+                Debug.Log("Movestate = " + moveState);
+            }
+            else
+            {
+                Debug.Log("Cannont enter movestate without a unit selected");
+            }
         }
         if (Input.GetKeyDown(KeyCode.M))
         {
-            attackState = false;
-            buildState = false;
-            moveState = true;
-            Debug.Log("Attackstate = " + attackState);
-            Debug.Log("Buildstate = " + buildState);
-            Debug.Log("Movestate = " + moveState);
+            if (selectedUnit != null)
+            {
+                attackState = false;
+                buildState = false;
+                moveState = true;
+                Debug.Log("Attackstate = " + attackState);
+                Debug.Log("Buildstate = " + buildState);
+                Debug.Log("Movestate = " + moveState);
+            }
+            else
+            {
+                Debug.Log("Cannont enter movestate without a unit selected");
+            }
         }
         if (buildState)
         {
@@ -217,7 +231,7 @@ public class WorldGrid : MonoBehaviour
                                     else
                                     {
                                         selectedUnit.GetComponent<UnitBehaviour>().AttackUnit(selectedUnit, hitTile.TileOccupier);
-                                        Debug.Log($"{selectedUnit} attacked {hitTile.TileOccupier}");
+                                        
                                     }
                                     attackState = false;
                                     break;
@@ -298,6 +312,7 @@ public class WorldGrid : MonoBehaviour
             );
             
             worldTile.TileOccupierEnemy = enemy;
+            worldTile.TileOccupier = enemy;
         }
     }
     
