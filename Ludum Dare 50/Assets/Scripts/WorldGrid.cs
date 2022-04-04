@@ -18,7 +18,7 @@ public class WorldGrid : MonoBehaviour
     
     private RaycastHit2D _lastTileHit;
 
-    private WorldTile selectedTile;
+    private WorldTile selectedTile = null;
     public bool buildState = false;
     public bool moveState = false;
     public GameObject selectedUnit = null;
@@ -69,8 +69,8 @@ public class WorldGrid : MonoBehaviour
         {
             buildState = true;
             moveState = false;
-            Debug.Log("Buildstate now true");
-            Debug.Log("Movestate is " + moveState);
+            Debug.Log("Buildstate = " + buildState);
+            Debug.Log("Movestate = " + moveState);
         }
         if (buildState)
         {
@@ -117,30 +117,61 @@ public class WorldGrid : MonoBehaviour
                 //Spawn units to tile clicked on
                 if (buildState)
                 {
-                    SpawnManager.instance.SpawnAllyUnit(new Vector2(hitTile.XCoords, hitTile.YCoords), desiredUnit, hitTile);
-                    buildState = false;
-                }                                
-                else if (moveState && hitTile != selectedTile) //Move units to tile clicked on
-                {
-                    selectedUnit.GetComponent<UnitBehaviour>().MoveToTile(selectedUnit, selectedTile, hitTile);
-                    Debug.Log($"Moved {selectedUnit} to {hitTile.XCoords}, {hitTile.YCoords}");
-                    moveState = false;
-                }
-                else if (hitTile != selectedTile)
-                {
-                    selectedTile = hitTile;
-                    Debug.Log("Selected Tile");
-
-                    if (hitTile.TileOccupier != null)
+                    switch (hitTile.TileOccupier)
                     {
-                        selectedUnit = hitTile.TileOccupier;
-                        Debug.Log("Selected Unit");
-                        moveState = true;
-                        Debug.Log("Movestate is now true");
+                        case null:
+                            {
+                                SpawnManager.instance.SpawnAllyUnit(new Vector2(hitTile.XCoords, hitTile.YCoords), desiredUnit, hitTile);
+                                buildState = false;
+                                Debug.Log("Buildstate = " + buildState);
+                                selectedTile = null;
+                                break;
+                            }
+                        default:
+                            {
+                                Debug.Log("Unable to spawn");
+                                break;
+                            }
+                    }
+                    
+                }
 
+                else if (moveState)
+                {
+                    switch (hitTile.TileOccupier)
+                    {
+                        case null:
+                            {
+                                selectedUnit.GetComponent<UnitBehaviour>().MoveToTile(selectedUnit, selectedTile, hitTile);
+                                Debug.Log($"Moved {selectedUnit} to {hitTile.XCoords}, {hitTile.YCoords}");
+                                moveState = false;
+                                Debug.Log("Buildstate = " + buildState);
+                                selectedTile = null;
+                                selectedUnit = null;
+                                break;
+                            }
+                        default:
+                            {
+                                Debug.Log("Unable to move");
+                                break;
+                            }
                     }
 
                 }
+
+                else if (!(moveState || buildState))
+                {
+                    selectedTile = hitTile;
+                    Debug.Log("Tile selected");
+                    if (hitTile.TileOccupier != null)
+                    {
+                        selectedUnit = hitTile.TileOccupier;
+                        Debug.Log("Unit selected");
+                        moveState = true;
+                        Debug.Log("Movestate = " + moveState);
+                    }
+                }
+
             }
 
             _lastTileHit = hit;
