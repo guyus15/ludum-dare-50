@@ -38,6 +38,7 @@ public class WorldGrid : MonoBehaviour
     {
         // Create the world tiles for the game.
         _tileCoords = new List<Vector2>();
+        _spawnTileObjects = new List<GameObject>();
 
         int currentRow = 0;
         
