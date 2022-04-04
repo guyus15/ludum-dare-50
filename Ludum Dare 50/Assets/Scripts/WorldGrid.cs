@@ -99,15 +99,14 @@ public class WorldGrid : MonoBehaviour
         {
             //Highlighting hovered tile
             WorldTile hitTile = hit.collider.gameObject.GetComponent<WorldTile>();
-            hitTile.HighlightTile(true);        
-        
+            hitTile.HighlightTile(true);
+                    
             if (!hit.collider.Equals(_lastTileHit.collider) && _lastTileHit.collider != null)
             {
                 WorldTile lastHitTile = _lastTileHit.collider.gameObject.GetComponent<WorldTile>();
 
                 lastHitTile.HighlightTile(false);
             }
-
             
             if (Input.GetMouseButtonDown(0))
             {
@@ -130,12 +129,13 @@ public class WorldGrid : MonoBehaviour
                         default:
                             {
                                 Debug.Log("Unable to spawn");
+                                buildState = false;
                                 break;
                             }
                     }
                     
                 }
-
+                //Moves selected unit to clicked tile if tile is empty
                 else if (moveState)
                 {
                     switch (hitTile.TileOccupier)
@@ -158,7 +158,7 @@ public class WorldGrid : MonoBehaviour
                     }
 
                 }
-
+                //Selects a tile and unit in the tile where applicable
                 else if (!(moveState || buildState))
                 {
                     selectedTile = hitTile;
@@ -173,7 +173,7 @@ public class WorldGrid : MonoBehaviour
                 }
 
             }
-
+            
             _lastTileHit = hit;
         }
         else if (_lastTileHit.collider != null)
