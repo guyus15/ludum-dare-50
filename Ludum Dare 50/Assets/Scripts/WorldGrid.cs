@@ -14,6 +14,7 @@ public class WorldGrid : MonoBehaviour
     private List<Vector2> _tileCoords;
     private List<GameObject> _tileObjects;
     private List<GameObject> _spawnTileObjects;
+    private List<GameObject> _enemies;
     
     private Camera _mainCamera;
     
@@ -52,6 +53,7 @@ public class WorldGrid : MonoBehaviour
         _tileCoords = new List<Vector2>();
         _tileObjects = new List<GameObject>();
         _spawnTileObjects = new List<GameObject>();
+        _enemies = new List<GameObject>();
 
         // Create the world tiles for the game.
         
@@ -83,57 +85,7 @@ public class WorldGrid : MonoBehaviour
     private void Update()
     {
         RaycastHit2D hit = HoveredTile();
-
-        if(Input.GetKeyDown(KeyCode.B))
-        {
-            _buildState = true;
-            _moveState = false;
-            _attackState = false;
-            Debug.Log("Buildstate = " + _buildState);
-            Debug.Log("Movestate = " + _moveState);
-            Debug.Log("Attackstate = " + _attackState);
-        }
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            _buildState = true;
-            _moveState = false;
-            _attackState = false;
-            Debug.Log("Buildstate = " + _buildState);
-            Debug.Log("Movestate = " + _moveState);
-            Debug.Log("Attackstate = " + _attackState);
-        }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            if (_selectedUnit != null)
-            {
-                _attackState = true;
-                _buildState = false;
-                _moveState = false;
-                Debug.Log("Attackstate = " + _attackState);
-                Debug.Log("Buildstate = " + _buildState);
-                Debug.Log("Movestate = " + _moveState);
-            }
-            else
-            {
-                Debug.Log("Cannont enter movestate without a unit selected");
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            if (_selectedUnit != null)
-            {
-                _attackState = false;
-                _buildState = false;
-                _moveState = true;
-                Debug.Log("Attackstate = " + _attackState);
-                Debug.Log("Buildstate = " + _buildState);
-                Debug.Log("Movestate = " + _moveState);
-            }
-            else
-            {
-                Debug.Log("Cannont enter movestate without a unit selected");
-            }
-        }
+        
         if (_buildState)
         {
             if (Input.GetKeyDown(KeyCode.T))
@@ -282,7 +234,43 @@ public class WorldGrid : MonoBehaviour
             hitTile.HighlightTile(false);
         }
     }
+    
+    public void ActivateBuildState()
+    {
+        _buildState = true;
+        _moveState = false;
+        _attackState = false;
+    }
 
+    public void ActivateAttackState()
+    {
+        if (_selectedUnit != null)
+        {
+            _attackState = true;
+            _buildState = false;
+            _moveState = false;
+        }
+        else
+        {
+            Debug.Log("Cannont enter movestate without a unit selected");
+        }
+    }
+
+    public void ActivateMoveState()
+    {
+        if (_selectedUnit != null)
+        {
+            _attackState = false;
+            _buildState = false;
+            _moveState = true;
+        }
+        else
+        {
+            Debug.Log("Cannont enter movestate without a unit selected");
+        }
+
+    }
+    
     private void BuildWorld()
     {
         // Handle building special tiles on which enemies can spawn.
@@ -317,7 +305,7 @@ public class WorldGrid : MonoBehaviour
     {
         foreach (GameObject tile in _spawnTileObjects)
         {
-            int shouldSpawn = UnityEngine.Random.Range(0, 2);
+            int shouldSpawn = UnityEngine.Random.Range(0, 10);
             if (shouldSpawn != 0) continue;
             
             WorldTile worldTile = tile.GetComponent<WorldTile>();
@@ -330,6 +318,8 @@ public class WorldGrid : MonoBehaviour
             );
 
             worldTile.TileOccupier = enemy;
+            
+            _enemies.Add(enemy);
         }
     }
 
@@ -358,6 +348,22 @@ public class WorldGrid : MonoBehaviour
         GridIncome = totalIncome;
         GridControlledAreas = _tileObjects.Count - totalEnemyTiles;
         GridEnemyOwnedAreas = totalEnemyTiles;
+    }
+
+    public void MoveEnemies()
+    {
+        foreach (GameObject enemyObject in _enemies)
+        {
+            WorldTile enemyTile = enemyObject.transform.parent.GetComponent<WorldTile>();
+            UnitBehaviour enemyBehaviour = enemyObject.GetComponent<UnitBehaviour>();
+            
+            enemyBehaviour.MoveRandomly(enemyObject, enemyTile);
+        }
+    }
+
+    public List<GameObject> GetWorldTiles()
+    {
+        return _tileObjects;
     }
     
     public int GetGridSize()

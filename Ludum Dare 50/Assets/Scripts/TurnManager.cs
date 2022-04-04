@@ -25,6 +25,13 @@ public class TurnManager : MonoBehaviour
     
     public void NextTurn()
     {
+        // Enemy movement/attacks if the current turn is not the first
+        if (CurrentTurn > 0)
+        {
+            WorldGrid.instance.MoveEnemies();
+        }
+        
+        // Spawn enemies each turn
         WorldGrid.instance.SpawnEnemies();
         
         // Update tile values based on their current properties.
@@ -32,9 +39,6 @@ public class TurnManager : MonoBehaviour
         
         // Update the general menu.
         MenuManager.instance.UpdateGeneralMenu();
-        
-        
-        // Enemy movement/attacks
 
         CurrentTurn++;
     }
