@@ -32,11 +32,15 @@ public class UnitBehaviour : MonoBehaviour
     //Level up
     //reinforce
 
-    public void MoveToTile(GameObject selectedUnit, WorldTile destinationTile)
+    public void MoveToTile(GameObject selectedUnit, WorldTile selectedTile, WorldTile destinationTile)
     {
-        GameObject unit = selectedUnit;
+            
         //Set selected units coord to the destination tiles coords
-        unit.transform.position = new Vector3(destinationTile.XCoords, destinationTile.YCoords, 0f);
+        selectedUnit.transform.position = new Vector3(destinationTile.XCoords, destinationTile.YCoords, 0f);
+        selectedUnit.transform.parent = destinationTile.transform;
+        selectedTile.TileOccupier = null;
+        destinationTile.TileOccupier = selectedUnit;
+
     }
 
     void AttackLand()

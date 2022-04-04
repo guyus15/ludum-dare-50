@@ -122,7 +122,7 @@ public class WorldGrid : MonoBehaviour
                 }                                
                 else if (moveState && hitTile != selectedTile) //Move units to tile clicked on
                 {
-                    selectedUnit.GetComponent<UnitBehaviour>().MoveToTile(selectedUnit, hitTile);
+                    selectedUnit.GetComponent<UnitBehaviour>().MoveToTile(selectedUnit, selectedTile, hitTile);
                     Debug.Log($"Moved {selectedUnit} to {hitTile.XCoords}, {hitTile.YCoords}");
                     moveState = false;
                 }
