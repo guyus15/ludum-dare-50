@@ -20,11 +20,10 @@ public class TurnManager : MonoBehaviour
     
     public void NextTurn()
     {
-        if (CurrentTurn > 0)
-        {
-            // Spawn enemies
-        }
-
+        Debug.Log("Advancing to the next turn");
+        
+        WorldGrid.instance.SpawnEnemies();
+        
         // Update tile values based on their current properties.
         
         // Update player currency.
