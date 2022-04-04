@@ -24,6 +24,8 @@ public class UnitBehaviour : MonoBehaviour
     [SerializeField] private UnitType _unitType;
     [SerializeField] private TileAreaType _unitPrefTile;
 
+    public bool Allied { get; private set; }
+
     
 
     //Movement
@@ -43,11 +45,10 @@ public class UnitBehaviour : MonoBehaviour
 
     }
 
-    void AttackLand()
+    public void AttackUnit(GameObject attacker, GameObject defender)
     {
-        //Get current position
-        //Get Land status (health)
-        //Remove 1 from the land status
+        attacker.GetComponent<UnitBehaviour>()._unitHealth -= defender.GetComponent<UnitBehaviour>()._unitStrength;
+        defender.GetComponent<UnitBehaviour>()._unitHealth -= attacker.GetComponent<UnitBehaviour>()._unitStrength;                
     }
 
     void DisbandUnit()
@@ -69,17 +70,5 @@ public class UnitBehaviour : MonoBehaviour
         //Disable movement for unit for 2 turns
         //Increase strength/health for 2 turns
     }
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+  
 }

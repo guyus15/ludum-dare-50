@@ -21,6 +21,7 @@ public class WorldGrid : MonoBehaviour
     private WorldTile selectedTile = null;
     public bool buildState = false;
     public bool moveState = false;
+    public bool attackState = false;
     public GameObject selectedUnit = null;
     public UnitType desiredUnit;
 
@@ -69,6 +70,26 @@ public class WorldGrid : MonoBehaviour
         {
             buildState = true;
             moveState = false;
+            attackState = false;
+            Debug.Log("Buildstate = " + buildState);
+            Debug.Log("Movestate = " + moveState);
+            Debug.Log("Attackstate = " + attackState);
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            attackState = true;
+            buildState = false;
+            moveState = false;
+            Debug.Log("Attackstate = " + attackState);
+            Debug.Log("Buildstate = " + buildState);
+            Debug.Log("Movestate = " + moveState);
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            attackState = false;
+            buildState = false;
+            moveState = true;
+            Debug.Log("Attackstate = " + attackState);
             Debug.Log("Buildstate = " + buildState);
             Debug.Log("Movestate = " + moveState);
         }
@@ -151,24 +172,55 @@ public class WorldGrid : MonoBehaviour
                                 break;
                             }
                         default:
-                            {
-                                Debug.Log("Unable to move");
+                            {                                
+                                Debug.Log("Tile Occupied");
+                                moveState = false;
                                 break;
                             }
                     }
 
                 }
+                //Attacks a unit if clicked tile holds an enemy
+                else if (attackState)
+                {
+                    switch (hitTile.TileOccupier)
+                    {
+                        case null:
+                            {
+                                Debug.Log("Invalid attack - Empty Tile");
+                                attackState = false;
+                                break;
+                            }
+                        default:
+                            {
+                                if (hitTile.TileOccupier.GetComponent<UnitBehaviour>().Allied)
+                                {
+                                    Debug.Log("Cannot attack allied unit");                                    
+                                }
+                                else
+                                {
+                                    selectedUnit.GetComponent<UnitBehaviour>().AttackUnit(selectedUnit, hitTile.TileOccupier);
+                                    Debug.Log($"{selectedUnit} attacked {hitTile.TileOccupier}");
+                                }                                    
+                                attackState = false;
+                                break;
+                            }
+                    }
+                }                
                 //Selects a tile and unit in the tile where applicable
-                else if (!(moveState || buildState))
+                else if (!(moveState || buildState || attackState))
                 {
                     selectedTile = hitTile;
                     Debug.Log("Tile selected");
                     if (hitTile.TileOccupier != null)
                     {
                         selectedUnit = hitTile.TileOccupier;
-                        Debug.Log("Unit selected");
-                        moveState = true;
-                        Debug.Log("Movestate = " + moveState);
+                        Debug.Log("Unit selected");                                                
+                    }
+                    else
+                    {
+                        selectedUnit = null;
+                        Debug.Log("Deselected Unit");
                     }
                 }
 
