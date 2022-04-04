@@ -1,6 +1,4 @@
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class MenuManager : MonoBehaviour
 {
@@ -10,6 +8,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject _generalMenuObject;
 
     private TileMenu _tileMenu;
+    private GeneralMenu _generalMenu;
 
     private WorldTile _currentlySelectedTile;
     
@@ -24,6 +23,10 @@ public class MenuManager : MonoBehaviour
             Debug.Log("Instance already exists, destroying object!");
             Destroy(this);
         }
+        
+        // Initialising menu values
+        _tileMenu = _tileMenuObject.GetComponent<TileMenu>();
+        _generalMenu = _generalMenuObject.GetComponent<GeneralMenu>();
     }
     #endregion
 
@@ -31,8 +34,6 @@ public class MenuManager : MonoBehaviour
     {
         _tileMenuObject.SetActive(false);
         _generalMenuObject.SetActive(true);
-        
-        _tileMenu = _tileMenuObject.GetComponent<TileMenu>();
 
         _currentlySelectedTile = null;
     }
@@ -48,11 +49,11 @@ public class MenuManager : MonoBehaviour
         _currentlySelectedTile = tile;
         
         _tileMenu.AreaName = tile.TileArea.ToString();
-        _tileMenu.Population = tile.Population;
         _tileMenu.Income = tile.Income;
         _tileMenu.UnderAttack = tile.UnderAttack;
         _tileMenu.EnemyOwned = tile.EnemyOwned;
         _tileMenu.TurnsUnderAttack = tile.TurnsUnderAttack;
+        _tileMenu.Occupied = tile.TileOccupier != null;
         
         _tileMenu.UpdateMenu();
         
@@ -66,6 +67,15 @@ public class MenuManager : MonoBehaviour
         _currentlySelectedTile = null;
     }
 
+    public void UpdateGeneralMenu()
+    {
+        _generalMenu.TotalIncome = WorldGrid.instance.GridIncome;
+        _generalMenu.ControlledAreas = WorldGrid.instance.GridControlledAreas;
+        _generalMenu.EnemyOwnedAreas = WorldGrid.instance.GridEnemyOwnedAreas;
+        
+        _generalMenu.UpdateMenu();
+    }
+    
     public void ShowGeneralMenu()
     {
         _generalMenuObject.SetActive(true);

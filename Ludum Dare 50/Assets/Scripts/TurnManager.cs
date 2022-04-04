@@ -3,7 +3,7 @@ using UnityEngine;
 public class TurnManager : MonoBehaviour
 {
     public static TurnManager instance;
-
+    
     public int CurrentTurn { get; private set; }
 
     private void Awake()
@@ -17,16 +17,22 @@ public class TurnManager : MonoBehaviour
             Destroy(this);
         }
     }
+
+    private void Start()
+    {
+        MenuManager.instance.UpdateGeneralMenu();   
+    }
     
     public void NextTurn()
     {
-        Debug.Log("Advancing to the next turn");
-        
         WorldGrid.instance.SpawnEnemies();
         
         // Update tile values based on their current properties.
+        WorldGrid.instance.UpdateWorldValues();
         
-        // Update player currency.
+        // Update the general menu.
+        MenuManager.instance.UpdateGeneralMenu();
+        
         
         // Enemy movement/attacks
 

@@ -12,18 +12,27 @@ public class WorldGrid : MonoBehaviour
     [SerializeField] private LayerMask _tileLayerMask;
     
     private List<Vector2> _tileCoords;
+    private List<GameObject> _tileObjects;
     private List<GameObject> _spawnTileObjects;
     
     private Camera _mainCamera;
     
     private RaycastHit2D _lastTileHit;
 
-    private WorldTile selectedTile = null;
-    public bool buildState = false;
-    public bool moveState = false;
-    public bool attackState = false;
-    public GameObject selectedUnit = null;
-    public UnitType desiredUnit;
+    private WorldTile _selectedTile = null;
+    
+    private bool _buildState = false;
+    private bool _moveState = false;
+    private bool _attackState = false;
+    
+    private GameObject _selectedUnit = null;
+    
+    private UnitType _desiredUnit;
+
+    public int GridIncome { get; set; }
+    public int GridControlledAreas { get; set; }
+    public int GridEnemyOwnedAreas { get; set; }
+
 
     #region Singleton
     private void Awake()
@@ -36,15 +45,14 @@ public class WorldGrid : MonoBehaviour
             Debug.Log("Instance already exists, destroying object!");
             Destroy(this);
         }
-    }
-    #endregion
-   
-    private void Start()
-    {
-        // Create the world tiles for the game.
+        
+        // Initialise lists
         _tileCoords = new List<Vector2>();
+        _tileObjects = new List<GameObject>();
         _spawnTileObjects = new List<GameObject>();
 
+        // Create the world tiles for the game.
+        
         int currentRow = 0;
         
         for (int i = 0; i < _gridSize * _gridSize; i++)
@@ -59,8 +67,11 @@ public class WorldGrid : MonoBehaviour
 
         _mainCamera = Camera.main;
         
-        BuildWorld();       
+        BuildWorld();
+        
+        UpdateWorldValues();
     }
+    #endregion
 
     private void Update()
     {
@@ -68,21 +79,21 @@ public class WorldGrid : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.B))
         {
-            buildState = true;
-            moveState = false;
-            attackState = false;
-            Debug.Log("Buildstate = " + buildState);
-            Debug.Log("Movestate = " + moveState);
-            Debug.Log("Attackstate = " + attackState);
+            _buildState = true;
+            _moveState = false;
+            _attackState = false;
+            Debug.Log("Buildstate = " + _buildState);
+            Debug.Log("Movestate = " + _moveState);
+            Debug.Log("Attackstate = " + _attackState);
         }
         if (Input.GetKeyDown(KeyCode.N))
         {
-            buildState = true;
-            moveState = false;
-            attackState = false;
-            Debug.Log("Buildstate = " + buildState);
-            Debug.Log("Movestate = " + moveState);
-            Debug.Log("Attackstate = " + attackState);
+            _buildState = true;
+            _moveState = false;
+            _attackState = false;
+            Debug.Log("Buildstate = " + _buildState);
+            Debug.Log("Movestate = " + _moveState);
+            Debug.Log("Attackstate = " + _attackState);
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -116,22 +127,22 @@ public class WorldGrid : MonoBehaviour
                 Debug.Log("Cannont enter movestate without a unit selected");
             }
         }
-        if (buildState)
+        if (_buildState)
         {
             if (Input.GetKeyDown(KeyCode.T))
             {
-                desiredUnit = UnitType.INFANTRY;
-                Debug.Log("Chosen unit: " + desiredUnit);
+                _desiredUnit = UnitType.INFANTRY;
+                Debug.Log("Chosen unit: " + _desiredUnit);
             }
             if (Input.GetKeyDown(KeyCode.Y))
             {
-                desiredUnit = UnitType.ARCHER;
-                Debug.Log("Chosen unit: " + desiredUnit);
+                _desiredUnit = UnitType.ARCHER;
+                Debug.Log("Chosen unit: " + _desiredUnit);
             }
             if (Input.GetKeyDown(KeyCode.U))
             {
-                desiredUnit = UnitType.CAVALRY;
-                Debug.Log("Chosen unit: " + desiredUnit);
+                _desiredUnit = UnitType.CAVALRY;
+                Debug.Log("Chosen unit: " + _desiredUnit);
             }
         }
 
@@ -158,59 +169,59 @@ public class WorldGrid : MonoBehaviour
                 MenuManager.instance.ShowTileMenu(hitTile);
 
                 //Spawn units to tile clicked on
-                if (buildState)
+                if (_buildState)
                 {
                     switch (hitTile.TileOccupier)
                     {
                         case null:
                             {
-                                SpawnManager.instance.SpawnAllyUnit(new Vector2(hitTile.XCoords, hitTile.YCoords), desiredUnit, hitTile);
+                                SpawnManager.instance.SpawnAllyUnit(new Vector2(hitTile.XCoords, hitTile.YCoords), _desiredUnit, hitTile);
                                 Debug.Log("Spawning allied unit");
-                                buildState = false;
-                                Debug.Log("Buildstate = " + buildState);
-                                selectedTile = null;
+                                _buildState = false;
+                                Debug.Log("Buildstate = " + _buildState);
+                                _selectedTile = null;
                                 break;
                             }
                         default:
                             {
                                 Debug.Log("Unable to spawn");
-                                buildState = false;
+                                _buildState = false;
                                 break;
                             }
                     }
                     
                 }
                 //Moves selected unit to clicked tile if tile is empty
-                else if (moveState)
+                else if (_moveState)
                 {
                     switch (hitTile.TileOccupier)
                     {
                         case null:
                             {
-                                selectedUnit.GetComponent<UnitBehaviour>().MoveToTile(selectedUnit, selectedTile, hitTile);
-                                Debug.Log($"Moved {selectedUnit} to {hitTile.XCoords}, {hitTile.YCoords}");
-                                moveState = false;
-                                Debug.Log("Buildstate = " + buildState);
-                                selectedTile = null;
-                                selectedUnit = null;
+                                _selectedUnit.GetComponent<UnitBehaviour>().MoveToTile(_selectedUnit, _selectedTile, hitTile);
+                                Debug.Log($"Moved {_selectedUnit} to {hitTile.XCoords}, {hitTile.YCoords}");
+                                _moveState = false;
+                                Debug.Log("Buildstate = " + _buildState);
+                                _selectedTile = null;
+                                _selectedUnit = null;
                                 break;
                             }
                         default:
                             {                                
                                 Debug.Log("Tile Occupied");
-                                moveState = false;
+                                _moveState = false;
                                 break;
                             }
                     }
 
                 }
                 //Attacks a unit if clicked tile holds an enemy
-                else if (attackState)
+                else if (_attackState)
                 {
-                    if (selectedTile == hitTile)
+                    if (_selectedTile == hitTile)
                     {
                         Debug.Log("Invalid Tile - Cannot attack self");
-                        attackState = false;
+                        _attackState = false;
                     }
                     else
                     {                    
@@ -219,7 +230,7 @@ public class WorldGrid : MonoBehaviour
                             case null:
                                 {
                                     Debug.Log("Invalid attack - Empty Tile");
-                                    attackState = false;
+                                    _attackState = false;
                                     break;
                                 }
                             default:
@@ -230,32 +241,37 @@ public class WorldGrid : MonoBehaviour
                                     }
                                     else
                                     {
-                                        selectedUnit.GetComponent<UnitBehaviour>().AttackUnit(selectedUnit, hitTile.TileOccupier);
-                                        
+                                        _selectedUnit.GetComponent<UnitBehaviour>().AttackUnit(_selectedUnit, hitTile.TileOccupier);
+                                        Debug.Log($"{_selectedUnit} attacked {hitTile.TileOccupier}");
                                     }
-                                    attackState = false;
+                                    _attackState = false;
                                     break;
                                 }
                         }
                     }
                 }                
                 //Selects a tile and unit in the tile where applicable
+<<<<<<< HEAD
                 else if (!(moveState || buildState || attackState))
                 {                    
                     selectedTile = hitTile;
+=======
+                else if (!(_moveState || _buildState || _attackState))
+                {
+                    _selectedTile = hitTile;
+>>>>>>> 329489fe3e22d5f5221d1e56b6da04ae2248aef6
                     Debug.Log("Tile selected");
                     if (hitTile.TileOccupier != null && hitTile.TileOccupier.GetComponent<UnitBehaviour>().Allied)
                     {
-                        selectedUnit = hitTile.TileOccupier;
+                        _selectedUnit = hitTile.TileOccupier;
                         Debug.Log("Unit selected");                                                
                     }
                     else
                     {
-                        selectedUnit = null;
+                        _selectedUnit = null;
                         Debug.Log("Deselected Unit");
                     }
                 }
-
             }
             
             _lastTileHit = hit;
@@ -292,6 +308,8 @@ public class WorldGrid : MonoBehaviour
                 newWorldTile.MarkAsSpawnTile();
                 _spawnTileObjects.Add(newTile);
             }
+            
+            _tileObjects.Add(newTile);
         }
     }
 
@@ -310,10 +328,36 @@ public class WorldGrid : MonoBehaviour
                 tile.transform.rotation,
                 tile.transform
             );
-            
-            worldTile.TileOccupierEnemy = enemy;
+
             worldTile.TileOccupier = enemy;
         }
+    }
+
+    public void UpdateWorldValues()
+    {
+        int totalIncome = 0;
+        int totalEnemyTiles = 0;
+
+        foreach (GameObject tile in _tileObjects)
+        {
+            WorldTile worldTile = tile.GetComponent<WorldTile>();
+
+            GameObject tileOccupier = worldTile.TileOccupier;
+            
+            if (tileOccupier != null && tileOccupier.GetComponent<UnitBehaviour>().Allied)
+            {
+                totalIncome += worldTile.Income;
+            }
+
+            if (worldTile.EnemyOwned)
+            {
+                totalEnemyTiles++;
+            }
+        }
+
+        GridIncome = totalIncome;
+        GridControlledAreas = _tileObjects.Count - totalEnemyTiles;
+        GridEnemyOwnedAreas = totalEnemyTiles;
     }
     
     public int GetGridSize()
@@ -321,7 +365,7 @@ public class WorldGrid : MonoBehaviour
         return _gridSize;
     }
     
-    public RaycastHit2D HoveredTile()
+    private RaycastHit2D HoveredTile()
     {
         // Create a ray to determine what tile we have hit.
         RaycastHit2D hit = Physics2D.Raycast(
