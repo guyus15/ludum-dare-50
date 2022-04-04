@@ -15,7 +15,7 @@ public class GeneralMenu : MonoBehaviour
     public void UpdateMenu()
     {
         _totalIncomeText.text = "Total Income: " + TotalIncome;
-        _controlledAreasText.text = "Controller Areas: " + ControlledAreas;
+        _controlledAreasText.text = "Controlled Areas: " + ControlledAreas;
         _enemyOwnedAreas.text = "Enemy Owned Areas: " + EnemyOwnedAreas;
     }
 }
