@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -171,8 +172,14 @@ public class WorldGrid : MonoBehaviour
             
             WorldTile worldTile = tile.GetComponent<WorldTile>();
 
-            // TODO: finish enemy spawning!
-            worldTile.TileOccupierEnemy = null;
+            GameObject enemy = Instantiate(
+                SpawnManager.instance.GetInfantryPrefab(),
+                new Vector2(worldTile.XCoords, worldTile.YCoords),
+                tile.transform.rotation,
+                tile.transform
+            );
+            
+            worldTile.TileOccupierEnemy = enemy;
         }
     }
     
